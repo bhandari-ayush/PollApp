@@ -52,8 +52,6 @@ func run(r http.Handler, configAddr string, environment string) error {
 		return err
 	}
 
-	// log.Printf("server has started: %s  with env: %s\n", configAddr, environment)
-
 	return nil
 }
 

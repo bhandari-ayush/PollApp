@@ -13,23 +13,33 @@ type PollOption struct {
 	VoteCount  int    `json:"vote_count"`
 }
 
-func CreatePollOption(ctx context.Context, db *sql.DB, pollID int, optionText string) (int, error) {
+func (p *PollStore) CreatePollOption(ctx context.Context, pollID int, optionText string) error {
+	return withTx(p.db, ctx, func(tx *sql.Tx) error {
+		_, err := p.createPollOption(ctx, tx, pollID, optionText)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+}
+
+func (p *PollStore) createPollOption(ctx context.Context, tx *sql.Tx, pollID int, optionText string) (int, error) {
 	query := "INSERT INTO poll_options (poll_id, option_text) VALUES ($1, $2) RETURNING id"
 	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
 	defer cancel()
 
 	var optionID int
-	err := db.QueryRowContext(ctx, query, pollID, optionText).Scan(&optionID)
+	err := tx.QueryRowContext(ctx, query, pollID, optionText).Scan(&optionID)
 	if err != nil {
 		return 0, fmt.Errorf("error creating poll option: %v", err)
 	}
 	return optionID, nil
 }
 
-func GetPollOptions(ctx context.Context, db *sql.DB, pollID int) ([]PollOption, error) {
+func (p *PollStore) GetPollOptions(ctx context.Context, pollID int) ([]PollOption, error) {
 	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
 	defer cancel()
-	rows, err := db.QueryContext(ctx, "SELECT id, poll_id, option_text, vote_count FROM poll_options WHERE poll_id = $1", pollID)
+	rows, err := p.db.QueryContext(ctx, "SELECT id, poll_id, option_text, vote_count FROM poll_options WHERE poll_id = $1", pollID)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching poll options: %v", err)
 	}

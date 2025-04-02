@@ -1,6 +1,7 @@
 package store
 
 import (
+	"PollApp/payload"
 	"context"
 	"database/sql"
 	"errors"
@@ -20,11 +21,24 @@ type Storage struct {
 		Create(context.Context, *User) error
 		Delete(context.Context, int) error
 	}
+	Polls interface {
+		GetByID(ctx context.Context, pollID int) (*Poll, error)
+		ListPolls(ctx context.Context) ([]*Poll, error)
+		Create(context.Context, *payload.PollRequest) error
+		Delete(ctx context.Context, pollID int) error
+	}
+	Votes interface {
+		Create(ctx context.Context, db *sql.DB, voteRequest *payload.VoteRequest) error
+		Update(ctx context.Context, db *sql.DB, voteRequest *payload.VoteRequest) error
+		Delete(ctx context.Context, db *sql.DB, voteRequest *payload.VoteRequest) error
+	}
 }
 
 func NewStorage(db *sql.DB) Storage {
 	return Storage{
 		Users: &UserStore{db},
+		Polls: &PollStore{db},
+		Votes: &VoteStore{db},
 	}
 }
 

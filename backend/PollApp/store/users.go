@@ -39,7 +39,7 @@ func (u *UserStore) Create(ctx context.Context, user *User) error {
 func (u *UserStore) createUser(ctx context.Context, tx *sql.Tx, user *User) (int, error) {
 	query := "INSERT INTO users (username, password_hash, email) VALUES ($1, $2, $3) RETURNING id"
 	var userID int
-	err := u.db.QueryRowContext(ctx, query, user.Username, user.Password, user.Email).Scan(&userID)
+	err := tx.QueryRowContext(ctx, query, user.Username, user.Password, user.Email).Scan(&userID)
 	if err != nil {
 		return 0, fmt.Errorf("error creating user: %v", err)
 	}
