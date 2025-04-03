@@ -19,7 +19,7 @@ type VoteStore struct {
 	db *sql.DB
 }
 
-func (v *VoteStore) Create(ctx context.Context, db *sql.DB, voteRequest *payload.VoteRequest) error {
+func (v *VoteStore) Create(ctx context.Context, voteRequest *payload.VoteRequest) error {
 	return withTx(v.db, ctx, func(tx *sql.Tx) error {
 		err := v.createVote(ctx, tx, voteRequest)
 		if err != nil {
@@ -47,7 +47,7 @@ func (v *VoteStore) createVote(ctx context.Context, tx *sql.Tx, voteRequest *pay
 	return nil
 }
 
-func (v *VoteStore) Update(ctx context.Context, db *sql.DB, voteRequest *payload.VoteRequest) error {
+func (v *VoteStore) Update(ctx context.Context, voteRequest *payload.VoteRequest) error {
 	return withTx(v.db, ctx, func(tx *sql.Tx) error {
 		err := v.updateVote(ctx, tx, voteRequest)
 		if err != nil {
@@ -91,7 +91,7 @@ func (v *VoteStore) updateVote(ctx context.Context, tx *sql.Tx, voteRequest *pay
 	return nil
 }
 
-func (v *VoteStore) Delete(ctx context.Context, db *sql.DB, voteRequest *payload.VoteRequest) error {
+func (v *VoteStore) Delete(ctx context.Context, voteRequest *payload.VoteRequest) error {
 	return withTx(v.db, ctx, func(tx *sql.Tx) error {
 		err := v.deleteVote(ctx, tx, voteRequest)
 		if err != nil {
@@ -161,13 +161,3 @@ func (v *VoteStore) getPreviousVote(ctx context.Context, tx *sql.Tx, userID, pol
 	}
 	return optionID, nil
 }
-
-// func (v *VoteStore) UpdateVoteCount(ctx context.Context, optionID int) error {
-// 	return withTx(v.db, ctx, func(tx *sql.Tx) error {
-// 		err := v.updateVoteCount(ctx, tx, optionID)
-// 		if err != nil {
-// 			return err
-// 		}
-// 		return nil
-// 	})
-// }

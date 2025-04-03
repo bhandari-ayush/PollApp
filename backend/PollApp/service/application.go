@@ -1,10 +1,12 @@
 package service
 
 import (
+	"PollApp/auth"
 	"PollApp/env"
 	"PollApp/store"
 	"expvar"
 	"runtime"
+	"time"
 
 	"go.uber.org/zap"
 )
@@ -18,14 +20,16 @@ func GetAppInstance() *application {
 }
 
 type application struct {
-	config config
-	store  store.Storage
-	logger *zap.SugaredLogger
+	config        config
+	store         store.Storage
+	logger        *zap.SugaredLogger
+	authenticator auth.Authenticator
 }
 
 type config struct {
 	addr        string
 	db          dbConfig
+	auth        authConfig
 	env         string
 	apiURL      string
 	frontendURL string
@@ -36,6 +40,22 @@ type dbConfig struct {
 	maxOpenConns int
 	maxIdleConns int
 	maxIdleTime  string
+}
+
+type authConfig struct {
+	basic basicConfig
+	token tokenConfig
+}
+
+type basicConfig struct {
+	user string
+	pass string
+}
+
+type tokenConfig struct {
+	secret string
+	exp    time.Duration
+	iss    string
 }
 
 func Start() (string, string) {
@@ -49,7 +69,13 @@ func Start() (string, string) {
 			maxIdleConns: env.GetInt("DB_MAX_IDLE_CONNS", 30),
 			maxIdleTime:  env.GetString("DB_MAX_IDLE_TIME", "15m"),
 		},
-
+		auth: authConfig{
+			token: tokenConfig{
+				secret: env.GetString("AUTH_TOKEN_SECRET", "hello"),
+				exp:    time.Hour * 24 * 1,
+				iss:    "pollapp",
+			},
+		},
 		env: env.GetString("ENV", "development"),
 	}
 
@@ -74,10 +100,13 @@ func Start() (string, string) {
 	// Rate limiter
 
 	// store := store.NewStorage(db)
+
+	jwtAuthenticator := auth.NewJWTAuthenticator(cfg.auth.token.secret, cfg.auth.token.iss, cfg.auth.token.iss)
 	app = &application{
 		config: cfg,
 		// store:  store,
-		logger: logger,
+		logger:        logger,
+		authenticator: jwtAuthenticator,
 	}
 
 	// Metrics collected

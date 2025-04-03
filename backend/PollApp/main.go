@@ -1,6 +1,7 @@
 package main
 
 import (
+	"PollApp/env"
 	"PollApp/service"
 	"context"
 	"errors"
@@ -34,12 +35,12 @@ func run(r http.Handler, configAddr string, environment string) error {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 
-		log.Printf("signal caught", "signal", s.String())
+		log.Printf("signal caught %v", s.String())
 
 		shutdown <- srv.Shutdown(ctx)
 	}()
 
-	log.Printf("server has started: %s  with env: %s\n", configAddr, environment)
+	log.Printf("server has started %s  with env: %s\n", configAddr, environment)
 
 	err := srv.ListenAndServe()
 
@@ -51,21 +52,37 @@ func run(r http.Handler, configAddr string, environment string) error {
 	if err != nil {
 		return err
 	}
-
+	log.Printf("server has stopped %s  with env: %s\n", configAddr, environment)
 	return nil
 }
 
 func main() {
 
 	configAddr, environment := service.Start()
-
 	app := service.GetAppInstance()
 
-	log.Printf("application %+v", app)
+	apiVersion := env.GetString("API_VERSION", "/v1")
 
 	router := httprouter.New()
 
-	router.GET("/v1/health", app.HealthCheckHandler)
+	router.GET(apiVersion+"/health", app.HealthCheckHandler)
+
+	// router.GET(apiVersion+"/heatlh/auth", service.WrapHandlerWithParams(app.UpdateVoteHandler))
+
+	// router.POST(apiVersion+"/user/register", app.AuthTokenMiddleware(app.HealthCheckHandler))
+	// router.POST(apiVersion + "/user/login")
+	// router.POST("/register", app.AuthTokenMiddleware(http.HandlerFunc(app.CreatePollHandler)))
+
+	router.POST(apiVersion+"/poll", app.CreatePollHandler)
+	router.GET(apiVersion+"/poll/:pollId", app.GetPollHandler)
+	router.GET(apiVersion+"/all/poll/", app.ListPollsHandler)
+	router.DELETE(apiVersion+"/poll/:pollId", app.DeletePollHandler)
+
+	router.POST(apiVersion+"/vote", app.CreateVoteHandler)
+	router.PUT(apiVersion+"/vote", app.UpdateVoteHandler)
+
+	// router.GET(apiVersion+"/vote/option/:id",app.)
+	router.DELETE(apiVersion+"/vote", app.DeleteVoteHandler)
 
 	log.Fatal(run(router, configAddr, environment))
 }

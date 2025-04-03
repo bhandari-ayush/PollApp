@@ -28,9 +28,9 @@ type Storage struct {
 		Delete(ctx context.Context, pollID int) error
 	}
 	Votes interface {
-		Create(ctx context.Context, db *sql.DB, voteRequest *payload.VoteRequest) error
-		Update(ctx context.Context, db *sql.DB, voteRequest *payload.VoteRequest) error
-		Delete(ctx context.Context, db *sql.DB, voteRequest *payload.VoteRequest) error
+		Create(ctx context.Context, voteRequest *payload.VoteRequest) error
+		Update(ctx context.Context, voteRequest *payload.VoteRequest) error
+		Delete(ctx context.Context, voteRequest *payload.VoteRequest) error
 	}
 }
 
