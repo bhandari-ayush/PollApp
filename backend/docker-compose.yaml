@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:pollapp
+    container_name: postgres-sql-container
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pollapp
+      PGDATA: /var/lib/postgresql/data/pgdata
+      DB_MAX_OPEN_CONNS: 500
+    ports:
+      - "5432:5432"  
+    volumes:
+      - ./backend/volumes/postgress/postgress_data:/var/lib/postgresql/data  
+      - ./backend/volumes/postgress/create-db.sql:/docker-entrypoint-initdb.d/create_database.sql
+    restart: unless-stopped
