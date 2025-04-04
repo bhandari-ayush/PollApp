@@ -1,6 +1,7 @@
 package main
 
 import (
+	"PollApp/db"
 	"PollApp/env"
 	"PollApp/service"
 	"context"
@@ -60,8 +61,9 @@ func main() {
 
 	configAddr, environment := service.Start()
 	app := service.GetAppInstance()
-
 	apiVersion := env.GetString("API_VERSION", "/v1")
+
+	defer db.DisconnectDB()
 
 	router := httprouter.New()
 

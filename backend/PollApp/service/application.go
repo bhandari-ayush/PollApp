@@ -2,8 +2,10 @@ package service
 
 import (
 	"PollApp/auth"
+	"PollApp/db"
 	"PollApp/env"
 	"PollApp/store"
+	"context"
 	"expvar"
 	"runtime"
 	"time"
@@ -84,27 +86,29 @@ func Start() (string, string) {
 	defer logger.Sync()
 
 	// Main Database
-	// db, err := db.New(
-	// 	cfg.db.addr,
-	// 	cfg.db.maxOpenConns,
-	// 	cfg.db.maxIdleConns,
-	// 	cfg.db.maxIdleTime,
-	// )
-	// if err != nil {
-	// 	logger.Fatal(err)
-	// }
-
+	db, err := db.ConnectDB(
+		cfg.db.addr,
+		cfg.db.maxOpenConns,
+		cfg.db.maxIdleConns,
+		cfg.db.maxIdleTime,
+	)
+	if err != nil {
+		logger.Fatal(err)
+	}
 	// defer db.Close()
-	// logger.Info("database connection pool established")
+	logger.Info("database connection pool established")
 
-	// Rate limiter
+	err = store.CreateTables(db, context.Background())
+	if err != nil {
+		logger.Fatal(err)
+	}
 
-	// store := store.NewStorage(db)
+	store := store.NewStorage(db)
 
 	jwtAuthenticator := auth.NewJWTAuthenticator(cfg.auth.token.secret, cfg.auth.token.iss, cfg.auth.token.iss)
 	app = &application{
-		config: cfg,
-		// store:  store,
+		config:        cfg,
+		store:         store,
 		logger:        logger,
 		authenticator: jwtAuthenticator,
 	}
