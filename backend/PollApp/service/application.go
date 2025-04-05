@@ -66,10 +66,10 @@ func Start() (string, string) {
 		apiURL:      env.GetString("EXTERNAL_URL", "localhost:5020"),
 		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:5173"),
 		db: dbConfig{
-			addr:         env.GetString("DB_ADDR", "postgres://root:postgres@localhost/pollapp?sslmode=disable"),
+			addr:         env.GetString("DB_ADDR", "postgres://root:postgres@10.111.57.52/pollapp?sslmode=disable"),
 			maxOpenConns: env.GetInt("DB_MAX_OPEN_CONNS", 30),
-			maxIdleConns: env.GetInt("DB_MAX_IDLE_CONNS", 30),
-			maxIdleTime:  env.GetString("DB_MAX_IDLE_TIME", "15m"),
+			maxIdleConns: env.GetInt("DB_MAX_IDLE_CONNS", 10),
+			maxIdleTime:  env.GetString("DB_MAX_IDLE_TIME", "1m"),
 		},
 		auth: authConfig{
 			token: tokenConfig{
@@ -83,6 +83,7 @@ func Start() (string, string) {
 
 	// Logger
 	logger := zap.Must(zap.NewProduction()).Sugar()
+
 	defer logger.Sync()
 
 	// Main Database

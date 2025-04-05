@@ -13,8 +13,8 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+func (app *application) AuthTokenMiddleware(next httprouter.Handle) httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
 			app.unauthorizedErrorResponse(w, r, fmt.Errorf("authorization header is missing"))
@@ -53,8 +53,8 @@ func (app *application) AuthTokenMiddleware(next http.Handler) http.Handler {
 		}
 
 		ctx = context.WithValue(ctx, "user", user)
-		next.ServeHTTP(w, r.WithContext(ctx))
-	})
+		next(w, r.WithContext(ctx), ps)
+	}
 }
 
 func (app *application) BasicAuthMiddleware() func(http.Handler) http.Handler {

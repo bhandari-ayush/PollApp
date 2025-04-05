@@ -9,7 +9,7 @@ import (
 type User struct {
 	ID        int    `json:"id"`
 	Username  string `json:"username"`
-	Password  string `json:"password_hash"`
+	Password  string `json:"password"`
 	Email     string `json:"email"`
 	CreatedAt string `json:"created_at"`
 }
@@ -37,7 +37,7 @@ func (u *UserStore) Create(ctx context.Context, user *User) error {
 }
 
 func (u *UserStore) createUser(ctx context.Context, tx *sql.Tx, user *User) (int, error) {
-	query := "INSERT INTO users (username, password_hash, email) VALUES ($1, $2, $3) RETURNING id"
+	query := "INSERT INTO users (username, password, email) VALUES ($1, $2, $3) RETURNING id"
 	var userID int
 	err := tx.QueryRowContext(ctx, query, user.Username, user.Password, user.Email).Scan(&userID)
 	if err != nil {
@@ -48,21 +48,8 @@ func (u *UserStore) createUser(ctx context.Context, tx *sql.Tx, user *User) (int
 
 func (u *UserStore) GetByID(ctx context.Context, userID int) (*User, error) {
 	user := &User{}
-	query := "SELECT id, username, email, created_at FROM users WHERE id = $1"
-	err := u.db.QueryRowContext(ctx, query, userID).Scan(&user.ID, &user.Username, &user.Email, &user.CreatedAt)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			return &User{}, fmt.Errorf("user not found")
-		}
-		return &User{}, fmt.Errorf("error fetching user: %v", err)
-	}
-	return user, nil
-}
-
-func (u *UserStore) GetByUsername(ctx context.Context, username string) (*User, error) {
-	user := &User{}
-	query := "SELECT id, username, email, created_at FROM users WHERE username = $1"
-	err := u.db.QueryRowContext(ctx, query, username).Scan(&user.ID, &user.Username, &user.Email, &user.CreatedAt)
+	query := "SELECT id, username, password, email, created_at FROM users WHERE id = $1"
+	err := u.db.QueryRowContext(ctx, query, userID).Scan(&user.ID, &user.Username, &user.Password, &user.Email, &user.CreatedAt)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return &User{}, fmt.Errorf("user not found")

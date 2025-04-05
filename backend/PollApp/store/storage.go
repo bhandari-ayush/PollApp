@@ -18,7 +18,7 @@ var (
 type Storage struct {
 	Users interface {
 		GetByID(context.Context, int) (*User, error)
-		GetByUsername(context.Context, string) (*User, error)
+		// GetByUsername(context.Context, string) (*User, error)
 		Create(context.Context, *User) error
 		Delete(context.Context, int) error
 	}
@@ -69,8 +69,8 @@ var (
 	CREATE_USERS_TABLE = `CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
-    password_hash VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 `

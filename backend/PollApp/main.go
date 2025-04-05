@@ -61,6 +61,7 @@ func main() {
 
 	configAddr, environment := service.Start()
 	app := service.GetAppInstance()
+
 	apiVersion := env.GetString("API_VERSION", "/v1")
 
 	defer db.DisconnectDB()
@@ -69,22 +70,22 @@ func main() {
 
 	router.GET(apiVersion+"/health", app.HealthCheckHandler)
 
-	// router.GET(apiVersion+"/heatlh/auth", service.WrapHandlerWithParams(app.UpdateVoteHandler))
+	router.POST(apiVersion+"/auth/token", app.CreateTokenHandler)
 
-	// router.POST(apiVersion+"/user/register", app.AuthTokenMiddleware(app.HealthCheckHandler))
-	// router.POST(apiVersion + "/user/login")
-	// router.POST("/register", app.AuthTokenMiddleware(http.HandlerFunc(app.CreatePollHandler)))
+	router.POST(apiVersion+"/user", app.CreateUserHandler)
+	router.GET(apiVersion+"/user/:id", app.GetUserHandler)
+	router.DELETE(apiVersion+"/user/:id", app.DeleteUserHandler)
 
-	router.POST(apiVersion+"/poll", app.CreatePollHandler)
-	router.GET(apiVersion+"/poll/:pollId", app.GetPollHandler)
-	router.GET(apiVersion+"/all/poll/", app.ListPollsHandler)
-	router.DELETE(apiVersion+"/poll/:pollId", app.DeletePollHandler)
+	router.POST(apiVersion+"/poll", app.AuthTokenMiddleware(app.CreatePollHandler))
+	router.GET(apiVersion+"/poll/:pollId", app.AuthTokenMiddleware(app.GetPollHandler))
+	router.GET(apiVersion+"/all/poll/", app.AuthTokenMiddleware(app.ListPollsHandler))
+	router.DELETE(apiVersion+"/poll/:pollId", app.AuthTokenMiddleware(app.DeletePollHandler))
 
-	router.POST(apiVersion+"/vote", app.CreateVoteHandler)
-	router.PUT(apiVersion+"/vote", app.UpdateVoteHandler)
+	router.POST(apiVersion+"/vote", app.AuthTokenMiddleware(app.CreateVoteHandler))
+	router.PUT(apiVersion+"/vote", app.AuthTokenMiddleware(app.UpdateVoteHandler))
 
 	// router.GET(apiVersion+"/vote/option/:id",app.)
-	router.DELETE(apiVersion+"/vote", app.DeleteVoteHandler)
+	router.DELETE(apiVersion+"/vote", app.AuthTokenMiddleware(app.DeleteVoteHandler))
 
 	log.Fatal(run(router, configAddr, environment))
 }
