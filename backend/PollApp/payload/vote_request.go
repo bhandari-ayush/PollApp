@@ -1,7 +1,8 @@
 package payload
 
 type VoteRequest struct {
-	PollID   int `json:"poll_id"`
-	OptionID int `json:"option_id"`
-	UserID   int `json:"user_id"`
+	Id       int `json:"id"`
+	PollId   int `json:"poll_id"`
+	OptionId int `json:"option_id"`
+	UserId   int `json:"user_id"`
 }

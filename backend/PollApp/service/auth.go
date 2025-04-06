@@ -18,6 +18,7 @@ type CreateUserTokenPayload struct {
 }
 
 func (app *application) CreateTokenHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+
 	payload := &CreateUserTokenPayload{}
 	if err := readJSON(w, r, &payload); err != nil {
 		app.badRequestResponse(w, r, err)
@@ -29,7 +30,8 @@ func (app *application) CreateTokenHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	app.logger.Infof("payload %v ", payload)
+	app.logger.Infof("[%s] Payload %+v ", r.URL.Path, payload)
+
 	userID, err := strconv.Atoi(payload.Id)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Invalid user ID: %v", err), http.StatusBadRequest)
@@ -38,7 +40,7 @@ func (app *application) CreateTokenHandler(w http.ResponseWriter, r *http.Reques
 
 	user, err := app.store.Users.GetByID(r.Context(), userID)
 
-	app.logger.Infof("user %v ", user)
+	app.logger.Infof("user %+v ", user)
 	if err != nil {
 		switch err {
 		case store.ErrNotFound:
@@ -50,12 +52,12 @@ func (app *application) CreateTokenHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	if strings.Compare(user.Email, payload.Email) != 0 {
-		app.unauthorizedErrorResponse(w, r, err)
+		app.unauthorizedErrorResponse(w, r, store.ErrNotMatch)
 		return
 	}
 
 	claims := jwt.MapClaims{
-		"sub": user.ID,
+		"sub": user.Id,
 		"exp": time.Now().Add(app.config.auth.token.exp).Unix(),
 		"iat": time.Now().Unix(),
 		"nbf": time.Now().Unix(),
@@ -63,6 +65,7 @@ func (app *application) CreateTokenHandler(w http.ResponseWriter, r *http.Reques
 		"aud": app.config.auth.token.iss,
 	}
 
+	app.logger.Infof("[%s] Payload token %+v ", r.URL.Path, payload)
 	token, err := app.authenticator.GenerateToken(claims)
 	if err != nil {
 		app.internalServerError(w, r, err)

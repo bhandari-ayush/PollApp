@@ -1,8 +1,8 @@
 package payload
 
 type PollRequest struct {
-	Title       string       `json:"title"`
-	Description string       `json:"description"`
-	CreatorID   int          `json:"creator_id"`
-	Options     []PollOption `json:"options"`
+	Id          string        `json:"id"`
+	Description string        `json:"description"`
+	CreatorId   int           `json:"creator_id"`
+	Options     []*PollOption `json:"options"`
 }

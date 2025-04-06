@@ -7,6 +7,7 @@ import (
 	"PollApp/store"
 	"context"
 	"expvar"
+	"fmt"
 	"runtime"
 	"time"
 
@@ -60,13 +61,27 @@ type tokenConfig struct {
 	iss    string
 }
 
+func getDBAddress() string {
+
+	dbType := env.GetString("DB_TYPE", "postgres")
+	dbUser := env.GetString("DB_USER", "root")
+	dbPassword := env.GetString("DB_PASSWORD", "postgres")
+	dbHost := env.GetString("DB_HOST", "localhost")
+	dbPort := env.GetString("DB_PORT", "5432")
+	dbName := env.GetString("DB_NAME", "pollapp")
+	dbSslMode := env.GetString("DB_SSLMODE", "disable")
+
+	return fmt.Sprintf("%s://%s:%s@%s:%s/%s?sslmode=%s", dbType, dbUser, dbPassword, dbHost, dbPort, dbName, dbSslMode)
+}
+
 func Start() (string, string) {
 	cfg := config{
-		addr:        env.GetString("ADDR", ":5020"),
+		addr:        env.GetString("ADDR", ":5050"),
 		apiURL:      env.GetString("EXTERNAL_URL", "localhost:5020"),
 		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:5173"),
+
 		db: dbConfig{
-			addr:         env.GetString("DB_ADDR", "postgres://root:postgres@10.111.57.52/pollapp?sslmode=disable"),
+			addr:         getDBAddress(),
 			maxOpenConns: env.GetInt("DB_MAX_OPEN_CONNS", 30),
 			maxIdleConns: env.GetInt("DB_MAX_IDLE_CONNS", 10),
 			maxIdleTime:  env.GetString("DB_MAX_IDLE_TIME", "1m"),
@@ -81,12 +96,10 @@ func Start() (string, string) {
 		env: env.GetString("ENV", "development"),
 	}
 
-	// Logger
 	logger := zap.Must(zap.NewProduction()).Sugar()
 
 	defer logger.Sync()
 
-	// Main Database
 	db, err := db.ConnectDB(
 		cfg.db.addr,
 		cfg.db.maxOpenConns,
@@ -96,7 +109,7 @@ func Start() (string, string) {
 	if err != nil {
 		logger.Fatal(err)
 	}
-	// defer db.Close()
+
 	logger.Info("database connection pool established")
 
 	err = store.CreateTables(db, context.Background())
@@ -114,11 +127,10 @@ func Start() (string, string) {
 		authenticator: jwtAuthenticator,
 	}
 
-	// Metrics collected
 	expvar.NewString("version").Set(version)
-	// expvar.Publish("database", expvar.Func(func() any {
-	// 	return db.Stats()
-	// }))
+	expvar.Publish("database", expvar.Func(func() any {
+		return db.Stats()
+	}))
 	expvar.Publish("goroutines", expvar.Func(func() any {
 		return runtime.NumGoroutine()
 	}))

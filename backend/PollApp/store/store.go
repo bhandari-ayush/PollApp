@@ -5,33 +5,36 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-	"log"
 	"time"
 )
 
 var (
 	ErrNotFound          = errors.New("resource not found")
 	ErrConflict          = errors.New("resource already exists")
+	ErrNotMatch          = errors.New("resource data mismatch")
 	QueryTimeoutDuration = time.Second * 5
 )
 
 type Storage struct {
 	Users interface {
 		GetByID(context.Context, int) (*User, error)
-		// GetByUsername(context.Context, string) (*User, error)
-		Create(context.Context, *User) error
+		Create(context.Context, *User) (int, error)
 		Delete(context.Context, int) error
 	}
 	Polls interface {
 		GetByID(ctx context.Context, pollID int) (*Poll, error)
 		ListPolls(ctx context.Context) ([]*Poll, error)
-		Create(context.Context, *payload.PollRequest) error
+		Create(context.Context, *payload.PollRequest) (int, error)
 		Delete(ctx context.Context, pollID int) error
+
+		CreatePollOption(ctx context.Context, pollID int, optionText string) (int, error)
+		GetPollOptions(ctx context.Context, pollID int) ([]PollOption, error)
 	}
 	Votes interface {
-		Create(ctx context.Context, voteRequest *payload.VoteRequest) error
+		Create(ctx context.Context, voteRequest *payload.VoteRequest) (int, error)
 		Update(ctx context.Context, voteRequest *payload.VoteRequest) error
 		Delete(ctx context.Context, voteRequest *payload.VoteRequest) error
+		GetUsersForOption(ctx context.Context, optionID int) ([]int, error)
 	}
 }
 
@@ -60,7 +63,6 @@ func withTx(db *sql.DB, ctx context.Context, fn func(*sql.Tx) error) error {
 var (
 	CREATE_POLLS_TABLE = `CREATE TABLE IF NOT EXISTS polls (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
     description TEXT,
     creator_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -83,7 +85,8 @@ var (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (poll_id) REFERENCES polls(id),
     FOREIGN KEY (option_id) REFERENCES poll_options(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT unique_poll_user_vote UNIQUE (poll_id, user_id)
 );
 `
 
@@ -119,7 +122,6 @@ func createTables(ctx context.Context, tx *sql.Tx) error {
 	}
 
 	for _, table := range tables {
-		log.Printf("executing cmd %s\n", table)
 		_, err := tx.ExecContext(ctx, table)
 		if err != nil {
 			return err

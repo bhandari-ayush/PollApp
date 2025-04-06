@@ -80,11 +80,10 @@ func main() {
 	router.GET(apiVersion+"/poll/:pollId", app.AuthTokenMiddleware(app.GetPollHandler))
 	router.GET(apiVersion+"/all/poll/", app.AuthTokenMiddleware(app.ListPollsHandler))
 	router.DELETE(apiVersion+"/poll/:pollId", app.AuthTokenMiddleware(app.DeletePollHandler))
+	router.GET(apiVersion+"/option/:optionId/results", app.AuthTokenMiddleware(app.GetOptionVoteUsers))
 
 	router.POST(apiVersion+"/vote", app.AuthTokenMiddleware(app.CreateVoteHandler))
 	router.PUT(apiVersion+"/vote", app.AuthTokenMiddleware(app.UpdateVoteHandler))
-
-	// router.GET(apiVersion+"/vote/option/:id",app.)
 	router.DELETE(apiVersion+"/vote", app.AuthTokenMiddleware(app.DeleteVoteHandler))
 
 	log.Fatal(run(router, configAddr, environment))

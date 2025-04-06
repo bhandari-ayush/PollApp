@@ -101,11 +101,3 @@ func (app *application) getUser(ctx context.Context, userID int) (*store.User, e
 
 	return user, nil
 }
-
-func WrapHandlerWithParams(handler func(w http.ResponseWriter, r *http.Request, ps httprouter.Params)) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-		ps := httprouter.ParamsFromContext(r.Context())
-		handler(w, r, ps)
-	})
-}
