@@ -9,7 +9,6 @@ import (
 
 type Poll struct {
 	Id          int    `json:"id"`
-	Title       string `json:"title"`
 	Description string `json:"description"`
 	CreatorId   int    `json:"creator_id"`
 	CreatedAt   string `json:"created_at"`

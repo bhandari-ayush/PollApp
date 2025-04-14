@@ -7,6 +7,7 @@ type PollResponse struct {
 }
 
 type OptionData struct {
+	OptionId   int    `json:"option_id"`
 	OptionText string `json:"option_text"`
 	VoteCount  int    `json:"vote_count"`
 }

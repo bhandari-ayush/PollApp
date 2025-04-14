@@ -18,6 +18,7 @@ var (
 type Storage struct {
 	Users interface {
 		GetByID(context.Context, int) (*User, error)
+		GetByEmail(context.Context, string) (*User, error)
 		Create(context.Context, *User) (int, error)
 		Delete(context.Context, int) error
 	}

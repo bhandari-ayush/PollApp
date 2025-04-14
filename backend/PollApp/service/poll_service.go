@@ -27,7 +27,7 @@ func (app *application) CreatePollHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	app.logger.Info("pollId %s", pollId)
+	app.logger.Info("pollId %d", pollId)
 
 	for _, option := range pollRequest.Options {
 		optionId, err := app.store.Polls.CreatePollOption(r.Context(), pollId, option.OptionText)
@@ -68,6 +68,7 @@ func (app *application) GetPollHandler(w http.ResponseWriter, r *http.Request, p
 
 	for _, option := range pollOptions {
 		option := &payload.OptionData{
+			OptionId:   option.Id,
 			OptionText: option.OptionText,
 			VoteCount:  option.VoteCount,
 		}

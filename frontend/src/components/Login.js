@@ -8,7 +8,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
 
-    const { setJwtToken, setUserId } = useOutletContext(); // Add setUserId to context
+    const { setJwtToken, setUserId } = useOutletContext(); 
     const { setAlertClassName } = useOutletContext();
     const { setAlertMessage } = useOutletContext();
     const { toggleRefresh } = useOutletContext();
@@ -49,7 +49,8 @@ const Login = () => {
                     setAlertMessage(data.message);
                 } else {
                     if (!isRegister) {
-                        setJwtToken(data.access_token);
+                        console.log("token", data.data.token);
+                        setJwtToken(data.token);
                         setAlertClassName("d-none");
                         setAlertMessage("");
                         toggleRefresh(true);
@@ -57,7 +58,8 @@ const Login = () => {
                     } else {
                         setAlertClassName("alert-success");
                         setAlertMessage("Registration successful! Please log in.");
-                        setUserId(data.user_id); // Save userId in context
+                        console.log("payload",data)
+                        setUserId(data.id);
                         setIsRegister(false);
                     }
                 }

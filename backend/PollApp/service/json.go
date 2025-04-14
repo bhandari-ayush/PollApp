@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
@@ -41,6 +42,8 @@ func (app *application) jsonResponse(w http.ResponseWriter, status int, data any
 	type envelope struct {
 		Data any `json:"data"`
 	}
+
+	log.Printf("jsonResponse %v", data)
 
 	return writeJSON(w, status, &envelope{Data: data})
 }

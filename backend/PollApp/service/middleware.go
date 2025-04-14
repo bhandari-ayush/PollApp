@@ -17,12 +17,14 @@ func (app *application) AuthTokenMiddleware(next httprouter.Handle) httprouter.H
 	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
+			app.logger.Infof("header miss")
 			app.unauthorizedErrorResponse(w, r, fmt.Errorf("authorization header is missing"))
 			return
 		}
 
 		parts := strings.Split(authHeader, " ")
 		if len(parts) != 2 || parts[0] != "Bearer" {
+			app.logger.Infof("bearer miss")
 			app.unauthorizedErrorResponse(w, r, fmt.Errorf("authorization header is malformed"))
 			return
 		}
@@ -100,4 +102,22 @@ func (app *application) getUser(ctx context.Context, userID int) (*store.User, e
 	}
 
 	return user, nil
+}
+
+func (app *application) CorsMiddleware(next http.Handler) http.Handler {
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }

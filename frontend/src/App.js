@@ -4,6 +4,7 @@ import Alert from "./components/Alert";
 
 function App() {
   const [jwtToken, setJwtToken] = useState("");
+  const [userId, setUserId] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
   const [alertClassName, setAlertClassName] = useState("d-none");
 
@@ -114,7 +115,7 @@ function App() {
                 to="/polls"
                 className="list-group-item list-group-item-action"
               >
-                Movies
+                Polls
               </Link>
               {jwtToken !== "" && (
                 <>
@@ -136,8 +137,8 @@ function App() {
             context={{
               jwtToken,
               setJwtToken,
-              // userId,
-              // setUserId,
+              userId,
+              setUserId,
               setAlertClassName,
               setAlertMessage,
               toggleRefresh,

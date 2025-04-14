@@ -66,6 +66,22 @@ func (u *UserStore) GetByID(ctx context.Context, userId int) (*User, error) {
 	return user, nil
 }
 
+func (u *UserStore) GetByEmail(ctx context.Context, email string) (*User, error) {
+	user := &User{}
+	query := "SELECT id, username, password, email, created_at FROM users WHERE email = $1"
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	err := u.db.QueryRowContext(ctx, query, email).Scan(&user.Id, &user.Username, &user.Password, &user.Email, &user.CreatedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return &User{}, fmt.Errorf("user not found")
+		}
+		return &User{}, fmt.Errorf("error fetching user by email: %v", err)
+	}
+	return user, nil
+}
+
 func (u *UserStore) Delete(ctx context.Context, userId int) error {
 	query := `DELETE FROM users WHERE id = $1`
 

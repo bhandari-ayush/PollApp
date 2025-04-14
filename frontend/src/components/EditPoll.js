@@ -7,7 +7,7 @@ const EditPoll = () => {
     const [error, setError] = useState("");
     const navigate = useNavigate();
     const { id } = useParams(); 
-    
+
     const handleOptionChange = (index, value) => {
         const updatedOptions = [...options];
         updatedOptions[index].option_text = value;
@@ -61,7 +61,7 @@ const EditPoll = () => {
                 return response.json();
             })
             .then(() => {
-                navigate("/polls"); // Redirect to the polls list after saving
+                navigate("/polls"); 
             })
             .catch((err) => {
                 console.error(err);

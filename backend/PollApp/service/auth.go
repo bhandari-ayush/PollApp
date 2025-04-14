@@ -2,9 +2,7 @@ package service
 
 import (
 	"PollApp/store"
-	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
@@ -13,8 +11,8 @@ import (
 )
 
 type CreateUserTokenPayload struct {
-	Id    string `json:"id" validate:"required"`
-	Email string `json:"email" validate:"required,email,max=255"`
+	Email    string `json:"email" validate:"required,email,max=255"`
+	Password string `json:"password" validate:"required,min=4,max=255"`
 }
 
 func (app *application) CreateTokenHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -32,13 +30,7 @@ func (app *application) CreateTokenHandler(w http.ResponseWriter, r *http.Reques
 
 	app.logger.Infof("[%s] Payload %+v ", r.URL.Path, payload)
 
-	userID, err := strconv.Atoi(payload.Id)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Invalid user ID: %v", err), http.StatusBadRequest)
-		return
-	}
-
-	user, err := app.store.Users.GetByID(r.Context(), userID)
+	user, err := app.store.Users.GetByEmail(r.Context(), payload.Email)
 
 	app.logger.Infof("user %+v ", user)
 	if err != nil {
