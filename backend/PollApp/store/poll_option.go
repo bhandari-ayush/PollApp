@@ -58,3 +58,26 @@ func (p *PollStore) GetPollOptions(ctx context.Context, pollId int) ([]PollOptio
 
 	return options, nil
 }
+
+func (p *PollStore) DeletePollOptionById(ctx context.Context, pollId int) error {
+	err := withTx(p.db, ctx, func(tx *sql.Tx) error {
+		err := p.deletePollOptionById(ctx, tx, pollId)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	return err
+}
+
+func (p *PollStore) deletePollOptionById(ctx context.Context, tx *sql.Tx, pollId int) error {
+	query := "DELETE FROM poll_options WHERE poll_id = $1"
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	_, err := tx.ExecContext(ctx, query, pollId)
+	if err != nil {
+		return fmt.Errorf("error deleting poll options for poll_id %d: %v", pollId, err)
+	}
+	return nil
+}

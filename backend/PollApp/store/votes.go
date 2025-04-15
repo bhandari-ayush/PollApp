@@ -132,6 +132,29 @@ func (v *VoteStore) deleteVote(ctx context.Context, tx *sql.Tx, voteRequest *pay
 	return nil
 }
 
+func (v *VoteStore) DeleteByPollID(ctx context.Context, pollId int) error {
+	return withTx(v.db, ctx, func(tx *sql.Tx) error {
+		err := v.deleteVotesByPollID(ctx, tx, pollId)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+}
+
+func (v *VoteStore) deleteVotesByPollID(ctx context.Context, tx *sql.Tx, pollId int) error {
+	query := "DELETE FROM votes WHERE poll_id = $1"
+
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	_, err := tx.ExecContext(ctx, query, pollId)
+	if err != nil {
+		return fmt.Errorf("error deleting votes for poll_id %d: %v", pollId, err)
+	}
+	return nil
+}
+
 func (v *VoteStore) GetUsersForOption(ctx context.Context, optionId int) ([]int, error) {
 	query := `SELECT user_id FROM votes WHERE option_id = $1`
 

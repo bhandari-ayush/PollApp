@@ -76,7 +76,7 @@ func getDBAddress() string {
 
 func Start() (string, string) {
 	cfg := config{
-		addr:        env.GetString("ADDR", ":5050"),
+		addr:        ":" + env.GetString("BACKEND_PORT", "8080"),
 		apiURL:      env.GetString("EXTERNAL_URL", "localhost:5020"),
 		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:5173"),
 

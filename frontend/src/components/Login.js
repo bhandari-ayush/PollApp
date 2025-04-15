@@ -43,7 +43,6 @@ const Login = () => {
         fetch(url, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                console.log("user", data);
                 if (data.error) {
                     setAlertClassName("alert-danger");
                     setAlertMessage(data.message);
@@ -55,10 +54,12 @@ const Login = () => {
                         setAlertMessage("");
                         toggleRefresh(true);
                         navigate("/");
+                        setUserId(data.data.id);
+                        console.log("ID: ",data.data.id)
                     } else {
                         setAlertClassName("alert-success");
                         setAlertMessage("Registration successful! Please log in.");
-                        console.log("payload",data)
+                        console.log("ID: ",data.id)
                         setUserId(data.id);
                         setIsRegister(false);
                     }

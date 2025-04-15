@@ -74,7 +74,7 @@ function App() {
         .then((response) => response.json())
         .then((data) => {
           if (data.access_token) {
-            setJwtToken(data.access_token);
+            setJwtToken(data.access_token);            
             toggleRefresh(true);
           }
         })
@@ -132,7 +132,11 @@ function App() {
           </nav>
         </div>
         <div className="col-md-10">
-          <Alert message={alertMessage} className={alertClassName} />
+          <Alert
+            message={alertMessage}
+            className={alertClassName}
+            setClassName={setAlertClassName}
+          />
           <Outlet
             context={{
               jwtToken,

@@ -49,10 +49,10 @@ const Poll = () => {
             <ul className="list-group">
                 {poll.options && poll.options.map((option, index) => (
                     <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
-                        <span>{option.option_text}</span>
+                        <span>{`${String.fromCharCode(97 + index)}) ${option.option_text}`}</span>
                         <div>
                             <Link to={`/vote/${option.option_id}`} className="btn btn-primary btn-sm me-2">
-                                View Votes
+                                View Votes ({option.vote_count})
                             </Link>
                             <button
                                 className="btn btn-success btn-sm"
@@ -72,9 +72,9 @@ const Poll = () => {
         headers.append("Content-Type", "application/json");
 
         const payload = {
-            poll_id: id, 
-            option_id: optionId, 
-            user_id: userId, 
+            poll_id: parseInt(id, 10), 
+            option_id: parseInt(optionId, 10), 
+            user_id: parseInt(userId, 10), 
         };
 
         console.log("payload", payload);

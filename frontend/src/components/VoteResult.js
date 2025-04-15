@@ -36,26 +36,26 @@ const VoteResult = () => {
 
     return(
         <div className="vote-result">
-            <h2>Vote Data</h2>
-            <div className="vote-details">
+            <h2 className="mb-4">Vote Data</h2>
+            <div className="vote-details mb-4">
                 <p><strong>Option ID:</strong> {voteResult.option_id}</p>
                 <p><strong>Vote Count:</strong> {voteResult.vote_count}</p>
             </div>
-            <h3>Users</h3>
-            <table className="user-table">
-                <thead>
+            <h3 className="mb-3">Users</h3>
+            <table className="table table-striped table-bordered">
+                <thead className="table-dark">
                     <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Email</th>
+                        <th style={{ width: "5%" }}>#</th>
+                        <th style={{ width: "45%" }} className="text-truncate">Name</th>
+                        <th style={{ width: "50%" }} className="text-truncate">Email</th>
                     </tr>
                 </thead>
                 <tbody>
                     {voteResult.users && voteResult.users.map((user, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>{user.name}</td>
-                            <td>{user.email}</td>
+                            <td className="text-truncate">{user.name}</td>
+                            <td className="text-truncate">{user.email}</td>
                         </tr>
                     ))}
                 </tbody>

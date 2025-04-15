@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Ticket from "./../images/poll.jpg";
+import PollImg from "./../images/poll.jpg";
 
 const Home = () => {
   return (
@@ -8,7 +8,7 @@ const Home = () => {
         <h2> Let's Poll!!</h2>
         <hr />
         <Link to="/polls">
-          <img src={Ticket} alt="movie tickets"></img>
+          <img src={PollImg} alt="Let's Poll"></img>
         </Link>
       </div>
     </>

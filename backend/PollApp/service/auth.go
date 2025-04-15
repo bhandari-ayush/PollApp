@@ -3,6 +3,7 @@ package service
 import (
 	"PollApp/store"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -64,7 +65,7 @@ func (app *application) CreateTokenHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	if err := app.jsonResponse(w, http.StatusCreated, map[string]string{"token": token}); err != nil {
+	if err := app.jsonResponse(w, http.StatusCreated, map[string]string{"token": token, "id": strconv.Itoa(user.Id)}); err != nil {
 		app.internalServerError(w, r, err)
 	}
 }

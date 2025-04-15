@@ -101,7 +101,19 @@ func (app *application) DeletePollHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	app.logger.Infof("[%s] pollID:  %s ", r.URL.Path, pollIdStr)
+	err = app.store.Votes.DeleteByPollID(r.Context(), pollId)
+
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error deleting poll options: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	err = app.store.Polls.DeletePollOptionById(r.Context(), pollId)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error deleting poll options: %v", err), http.StatusInternalServerError)
+		return
+	}
+
 	err = app.store.Polls.Delete(r.Context(), pollId)
 	if err != nil {
 		if err == store.ErrNotFound {

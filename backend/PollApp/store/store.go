@@ -30,11 +30,13 @@ type Storage struct {
 
 		CreatePollOption(ctx context.Context, pollID int, optionText string) (int, error)
 		GetPollOptions(ctx context.Context, pollID int) ([]PollOption, error)
+		DeletePollOptionById(ctx context.Context, pollId int) error
 	}
 	Votes interface {
 		Create(ctx context.Context, voteRequest *payload.VoteRequest) (int, error)
 		Update(ctx context.Context, voteRequest *payload.VoteRequest) error
 		Delete(ctx context.Context, voteRequest *payload.VoteRequest) error
+		DeleteByPollID(ctx context.Context, pollID int) error
 		GetUsersForOption(ctx context.Context, optionID int) ([]int, error)
 	}
 }

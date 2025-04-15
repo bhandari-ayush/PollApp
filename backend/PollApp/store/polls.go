@@ -89,7 +89,7 @@ func (p *PollStore) Delete(ctx context.Context, pollId int) error {
 	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
 	defer cancel()
 
-	res, err := p.db.ExecContext(ctx, query, pollId)
+		res, err := p.db.ExecContext(ctx, query, pollId)
 	if err != nil {
 		return err
 	}
