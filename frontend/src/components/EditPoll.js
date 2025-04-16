@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import config from "../config"; 
 
 const EditPoll = () => {
     const [description, setDescription] = useState("");
@@ -42,7 +43,7 @@ const EditPoll = () => {
         };
 
         const requestOptions = {
-            method: id ? "PUT" : "POST", // Use PUT for editing, POST for adding
+            method: id ? "PUT" : "POST", 
             headers: {
                 "Content-Type": "application/json",
             },
@@ -50,8 +51,8 @@ const EditPoll = () => {
         };
 
         const url = id
-            ? `http://localhost:8080/v1/poll/${id}` // Edit existing poll
-            : `http://localhost:8080/v1/poll`; // Add new poll
+            ? `${config.backendBaseUrl}/poll/${id}` 
+            : `${config.backendBaseUrl}/poll`; 
 
         fetch(url, requestOptions)
             .then((response) => {

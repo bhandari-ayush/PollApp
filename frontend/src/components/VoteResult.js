@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import config from "../config"; 
 
 const VoteResult = () => {
     const [voteResult, setVoteResult] = useState(null);
@@ -14,10 +15,10 @@ const VoteResult = () => {
             headers: headers,
         }
 
-        fetch(`http://localhost:8080/v1/option/${id}/results`, requestOptions)
+        fetch(`${config.backendBaseUrl}/option/${id}/results`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
-                console.log("voteResult",data);
+                console.log("voteResult", data);
                 setVoteResult(data);
             })
             .catch(err => {

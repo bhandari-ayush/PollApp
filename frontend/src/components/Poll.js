@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useOutletContext } from "react-router-dom";
+import config from "../config"; 
 
 const Poll = () => {
     const { userId } = useOutletContext(); 
@@ -16,7 +17,7 @@ const Poll = () => {
             headers: headers,
         };
 
-        fetch(`http://localhost:8080/v1/poll/${id}`, requestOptions)
+        fetch(`${config.backendBaseUrl}/poll/${id}`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 console.log("poll", data);
@@ -85,7 +86,7 @@ const Poll = () => {
             body: JSON.stringify(payload),
         };
 
-        fetch(`http://localhost:8080/v1/vote`, requestOptions)
+        fetch(`${config.backendBaseUrl}/vote`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 console.log("Vote successful", data);
@@ -93,7 +94,7 @@ const Poll = () => {
             })
             .catch((err) => {
                 console.error("Error voting:", err);
-                alert("An error occurred while voting.");
+                alert(`An error occurred while voting: ${err.message || err}`);
             });
     }
 };

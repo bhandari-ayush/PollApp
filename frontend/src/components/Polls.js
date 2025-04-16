@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
+import config from "../config"; 
+
 
 const Polls = () => {
     const { userId, setAlertMessage, setAlertClassName } = useOutletContext();
@@ -36,7 +38,7 @@ const Polls = () => {
                 headers: headers,
             };
 
-            fetch(`http://localhost:8080/v1/poll/${pollId}`, requestOptions)
+            fetch(`${config.backendBaseUrl}/poll/${pollId}`, requestOptions)
                 .then((response) => {
                     if (response.ok) {
                         setPolls(polls.filter((poll) => poll.id !== pollId));
@@ -61,14 +63,14 @@ const Polls = () => {
             headers: headers,
         };
 
-        fetch(`http://localhost:8080/v1/all/poll/`, requestOptions)
+        fetch(`${config.backendBaseUrl}/all/poll/`, requestOptions)
             .then((response) => response.json())
             .then((data) => {
                 setPolls(data.data);
             })
             .catch((err) => {
                 console.log(err);
-            });
+            }); 
     }, []);
 
     if (!polls) {

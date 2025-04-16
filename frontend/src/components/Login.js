@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Input from "./form/Input";
+import config from "../config"; 
+
 
 const Login = () => {
     const [isRegister, setIsRegister] = useState(false);
@@ -37,8 +39,8 @@ const Login = () => {
         };
 
         const url = isRegister
-            ? `http://localhost:8080/v1/user`
-            : `http://localhost:8080/v1/auth/token`;
+            ? `${config.backendBaseUrl}/user`
+            : `${config.backendBaseUrl}/auth/token`;
 
         fetch(url, requestOptions)
             .then((response) => response.json())
