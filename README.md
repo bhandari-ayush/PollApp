@@ -15,6 +15,33 @@ Ensure the following tools are installed on your system:
 
 ---
 
+## Demo
+
+Below are the screenshots demonstrating the functionality of the application:
+
+1. **Register**  
+   ![Register](./images/register.png)
+
+2. **Login**  
+   ![Login](./images/login.png)
+
+3. **Home**  
+   ![Home](./images/home.png)
+
+4. **Create a Poll**  
+   ![Create a Poll](./images/newpoll.png)
+
+5. **Poll List**  
+   ![Poll List](./images/polls.png)
+
+6. **Poll Result**  
+   ![Poll Result](./images/pollresult.png)
+
+7. **Vote View**  
+   ![Vote View](./images/voteview.png)
+
+---
+
 ## Backend Setup
 
 ### Installation
