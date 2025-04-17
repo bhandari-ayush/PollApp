@@ -20,25 +20,25 @@ Ensure the following tools are installed on your system:
 Below are the screenshots demonstrating the functionality of the application:
 
 1. **Register**  
-   ![Register](./images/register.png)
+   ![Register](./Images/Register.png)
 
 2. **Login**  
-   ![Login](./images/login.png)
+   ![Login](./Images/Login.png)
 
 3. **Home**  
-   ![Home](./images/home.png)
+   ![Home](./Images/Home.png)
 
 4. **Create a Poll**  
-   ![Create a Poll](./images/newpoll.png)
+   ![Create a Poll](./Images/NewPoll.png)
 
 5. **Poll List**  
-   ![Poll List](./images/polls.png)
+   ![Poll List](./Images/Polls.png)
 
 6. **Poll Result**  
-   ![Poll Result](./images/pollresult.png)
+   ![Poll Result](./Images/PollResult.png)
 
 7. **Vote View**  
-   ![Vote View](./images/voteview.png)
+   ![Vote View](./Images/VoteView.png)
 
 ---
 
