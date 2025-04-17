@@ -14,8 +14,9 @@ func (app *application) CreateVoteHandler(w http.ResponseWriter, r *http.Request
 	voteRequest := &payload.VoteRequest{}
 	err := json.NewDecoder(r.Body).Decode(voteRequest)
 	if err != nil {
-		app.logger.Infof("error %s", err.Error())
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		errResponse := fmt.Errorf("invalid request body: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
@@ -23,7 +24,9 @@ func (app *application) CreateVoteHandler(w http.ResponseWriter, r *http.Request
 
 	voteId, err := app.store.Votes.Create(r.Context(), voteRequest)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error creating vote: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error creating vote: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 
@@ -36,7 +39,9 @@ func (app *application) UpdateVoteHandler(w http.ResponseWriter, r *http.Request
 	voteRequest := &payload.VoteRequest{}
 	err := json.NewDecoder(r.Body).Decode(voteRequest)
 	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		errResponse := fmt.Errorf("invalid request body: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
@@ -44,7 +49,9 @@ func (app *application) UpdateVoteHandler(w http.ResponseWriter, r *http.Request
 
 	err = app.store.Votes.Update(r.Context(), voteRequest)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error updating vote: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error update vote: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 
@@ -55,7 +62,9 @@ func (app *application) DeleteVoteHandler(w http.ResponseWriter, r *http.Request
 	voteRequest := &payload.VoteRequest{}
 	err := json.NewDecoder(r.Body).Decode(voteRequest)
 	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		errResponse := fmt.Errorf("invalid request body: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
@@ -63,7 +72,9 @@ func (app *application) DeleteVoteHandler(w http.ResponseWriter, r *http.Request
 
 	err = app.store.Votes.Delete(r.Context(), voteRequest)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error deleting vote: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error while deleting vote : %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 
@@ -75,7 +86,9 @@ func (app *application) GetOptionVoteUsers(w http.ResponseWriter, r *http.Reques
 	optionIdStr := ps.ByName("optionId")
 	optionId, err := strconv.Atoi(optionIdStr)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Invalid option ID: %v", err), http.StatusBadRequest)
+		errResponse := fmt.Errorf("invalid option Id: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
@@ -83,7 +96,9 @@ func (app *application) GetOptionVoteUsers(w http.ResponseWriter, r *http.Reques
 
 	users, err := app.store.Votes.GetUsersForOption(r.Context(), optionId)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Poll not found: %v", err), http.StatusNotFound)
+		errResponse := fmt.Errorf("poll not found Id: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
@@ -96,7 +111,9 @@ func (app *application) GetOptionVoteUsers(w http.ResponseWriter, r *http.Reques
 	for _, userId := range users {
 		userData, err := app.store.Users.GetByID(r.Context(), userId)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("Error fetching user: %v", err), http.StatusInternalServerError)
+			errResponse := fmt.Errorf("error while fetching user: %s", err.Error())
+			app.logger.Infof("Error: %s", errResponse.Error())
+			app.internalServerError(w, r, errResponse)
 			return
 		}
 		user := &payload.User{

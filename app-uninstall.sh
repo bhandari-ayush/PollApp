@@ -44,9 +44,4 @@ rm -rf ~/PollApp
 echo "### Cleaning up temporary files"
 rm -rf /tmp/go*.linux-amd64.tar.gz
 
-# echo "### Cleaning up environment files and logs"
-# rm -f ~/PollApp/backend/PollApp/backend.log || echo "No backend log found"
-# rm -f ~/PollApp/frontend/frontend.log || echo "No frontend log found"
-# rm -f ~/PollApp/frontend/.env || echo "No .env file found"
-
 echo "### Uninstall complete"

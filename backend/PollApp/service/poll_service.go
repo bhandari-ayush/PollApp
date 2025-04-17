@@ -15,7 +15,9 @@ func (app *application) CreatePollHandler(w http.ResponseWriter, r *http.Request
 	pollRequest := &payload.PollRequest{}
 	err := json.NewDecoder(r.Body).Decode(&pollRequest)
 	if err != nil {
-		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		errResponse := fmt.Errorf("invalid request body: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
@@ -23,7 +25,9 @@ func (app *application) CreatePollHandler(w http.ResponseWriter, r *http.Request
 
 	pollId, err := app.store.Polls.Create(r.Context(), pollRequest)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error creating poll: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error creating poll: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 
@@ -33,7 +37,9 @@ func (app *application) CreatePollHandler(w http.ResponseWriter, r *http.Request
 		optionId, err := app.store.Polls.CreatePollOption(r.Context(), pollId, option.OptionText)
 		app.logger.Infof("optionPollId %d", optionId)
 		if err != nil {
-			http.Error(w, fmt.Sprintf("Error creating poll: %v", err), http.StatusInternalServerError)
+			errResponse := fmt.Errorf("error creating poll option: %s", err.Error())
+			app.logger.Infof("Error: %s", errResponse.Error())
+			app.internalServerError(w, r, errResponse)
 			return
 		}
 	}
@@ -47,14 +53,18 @@ func (app *application) GetPollHandler(w http.ResponseWriter, r *http.Request, p
 	pollIdStr := ps.ByName("pollId")
 	pollId, err := strconv.Atoi(pollIdStr)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Invalid poll ID: %v", err), http.StatusBadRequest)
+		errResponse := fmt.Errorf("invalid poll Id: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
 	app.logger.Infof("[%s] pollId:  %s ", r.URL.Path, pollIdStr)
 	poll, err := app.store.Polls.GetByID(r.Context(), pollId)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Poll not found: %v", err), http.StatusNotFound)
+		errResponse := fmt.Errorf("poll not found Id: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
@@ -76,6 +86,7 @@ func (app *application) GetPollHandler(w http.ResponseWriter, r *http.Request, p
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, pollResponse); err != nil {
+		app.logger.Infof("Error: %s", err.Error())
 		app.internalServerError(w, r, err)
 	}
 }
@@ -84,11 +95,14 @@ func (app *application) ListPollsHandler(w http.ResponseWriter, r *http.Request,
 	app.logger.Infof("[%s] Request recieved ", r.URL.Path)
 	polls, err := app.store.Polls.ListPolls(r.Context())
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error fetching polls: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error while fetching polls: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, polls); err != nil {
+		app.logger.Infof("Error: %s", err.Error())
 		app.internalServerError(w, r, err)
 	}
 }
@@ -97,30 +111,40 @@ func (app *application) DeletePollHandler(w http.ResponseWriter, r *http.Request
 	pollIdStr := ps.ByName("pollId")
 	pollId, err := strconv.Atoi(pollIdStr)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Invalid poll ID: %v", err), http.StatusBadRequest)
+		errResponse := fmt.Errorf("invalid poll Id: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
 	err = app.store.Votes.DeleteByPollID(r.Context(), pollId)
 
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error deleting poll options: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error while deleting poll : %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 
 	err = app.store.Polls.DeletePollOptionById(r.Context(), pollId)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error deleting poll options: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error while deleting poll options: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 
 	err = app.store.Polls.Delete(r.Context(), pollId)
 	if err != nil {
 		if err == store.ErrNotFound {
-			http.Error(w, fmt.Sprintf("Poll with ID %d not found", pollId), http.StatusNotFound)
+			errResponse := fmt.Errorf("Poll with ID %d not found : %s", err.Error())
+			app.logger.Infof("Error: %s", errResponse.Error())
+			app.internalServerError(w, r, errResponse)
 			return
 		}
-		http.Error(w, fmt.Sprintf("Error deleting poll: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error while deleting poll: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 

@@ -14,6 +14,7 @@ func (app *application) HealthCheckHandler(w http.ResponseWriter, r *http.Reques
 	}
 
 	if err := app.jsonResponse(w, http.StatusOK, data); err != nil {
+		app.logger.Infof("Error: %s", err.Error())
 		app.internalServerError(w, r, err)
 	}
 }

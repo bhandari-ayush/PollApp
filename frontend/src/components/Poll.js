@@ -18,7 +18,19 @@ const Poll = () => {
         };
 
         fetch(`${config.backendBaseUrl}/poll/${id}`, requestOptions)
-            .then((response) => response.json())
+            .then((response) => {
+                const contentType = response.headers.get("Content-Type");
+                if (!response.ok) {
+                    return response.text().then((errorMessage) => {
+                        throw new Error(errorMessage);
+                    });
+                }
+                if (contentType && contentType.includes("application/json")) {
+                    return response.json();
+                } else {
+                    throw new Error("Unexpected response format: Not JSON");
+                }
+            })
             .then((data) => {
                 console.log("poll", data);
                 setPoll(data.data);

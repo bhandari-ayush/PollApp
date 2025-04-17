@@ -7,7 +7,7 @@ import (
 func (app *application) internalServerError(w http.ResponseWriter, r *http.Request, err error) {
 	app.logger.Errorw("internal error", "method", r.Method, "path", r.URL.Path, "error", err.Error())
 
-	writeJSONError(w, http.StatusInternalServerError, "the server encountered a problem")
+	writeJSONError(w, http.StatusInternalServerError, "the server encountered a problem:  "+err.Error())
 }
 
 func (app *application) forbiddenResponse(w http.ResponseWriter, r *http.Request) {

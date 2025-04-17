@@ -13,12 +13,15 @@ import (
 func (app *application) CreateUserHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	payload := &store.User{}
 	if err := json.NewDecoder(r.Body).Decode(payload); err != nil {
-		http.Error(w, fmt.Sprintf("Invalid request: %v", err), http.StatusBadRequest)
+		errResponse := fmt.Errorf("invalid request body: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
 	if err := Validate.Struct(payload); err != nil {
 		app.badRequestResponse(w, r, err)
+		app.logger.Infof("Error: %s", err.Error())
 		return
 	}
 
@@ -27,7 +30,9 @@ func (app *application) CreateUserHandler(w http.ResponseWriter, r *http.Request
 	user := store.NewUser(payload.Username, payload.Password, payload.Email)
 	id, err := app.store.Users.Create(r.Context(), user)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error creating user: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error creating user: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 
@@ -40,7 +45,9 @@ func (app *application) GetUserHandler(w http.ResponseWriter, r *http.Request, p
 	userIdStr := ps.ByName("id")
 	userId, err := strconv.Atoi(userIdStr)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Invalid user Id: %v", err), http.StatusBadRequest)
+		errResponse := fmt.Errorf("invalid user Id: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
@@ -48,7 +55,9 @@ func (app *application) GetUserHandler(w http.ResponseWriter, r *http.Request, p
 
 	user, err := app.store.Users.GetByID(r.Context(), userId)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Error fetching user: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error fetching user: %v", err)
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 
@@ -60,14 +69,18 @@ func (app *application) DeleteUserHandler(w http.ResponseWriter, r *http.Request
 	userIdStr := ps.ByName("id")
 	userId, err := strconv.Atoi(userIdStr)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Invalid user ID: %v", err), http.StatusBadRequest)
+		errResponse := fmt.Errorf("invalid user Id: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.badRequestResponse(w, r, errResponse)
 		return
 	}
 
 	app.logger.Infof("[%s] userId:  %s ", r.URL.Path, userIdStr)
 
 	if err := app.store.Users.Delete(r.Context(), userId); err != nil {
-		http.Error(w, fmt.Sprintf("Error deleting user: %v", err), http.StatusInternalServerError)
+		errResponse := fmt.Errorf("error while deleting user: %s", err.Error())
+		app.logger.Infof("Error: %s", errResponse.Error())
+		app.internalServerError(w, r, errResponse)
 		return
 	}
 

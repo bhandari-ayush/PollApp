@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
-import EditMovie from './components/EditMovie';
 import ErrorPage from './components/ErrorPage';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -18,10 +17,6 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {index: true, element: <Home /> },
-      {
-        path: "/admin/movie/0",
-        element: <EditMovie />,
-      },
       {
         path: "/poll/0",
         element: <EditPoll />,

@@ -61,11 +61,13 @@ func (app *application) CreateTokenHandler(w http.ResponseWriter, r *http.Reques
 	app.logger.Infof("[%s] Payload token %+v ", r.URL.Path, payload)
 	token, err := app.authenticator.GenerateToken(claims)
 	if err != nil {
+		app.logger.Infof("Error: %s", err.Error())
 		app.internalServerError(w, r, err)
 		return
 	}
 
 	if err := app.jsonResponse(w, http.StatusCreated, map[string]string{"token": token, "id": strconv.Itoa(user.Id)}); err != nil {
+		app.logger.Infof("Error: %s", err.Error())
 		app.internalServerError(w, r, err)
 	}
 }
