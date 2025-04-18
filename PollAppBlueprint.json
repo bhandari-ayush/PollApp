@@ -1,0 +1,978 @@
+{
+  "status": {},
+  "spec": {
+    "name": "Poll",
+    "description": "",
+    "resources": {
+      "service_definition_list": [
+        {
+          "name": "APP",
+          "description": "",
+          "variable_list": [],
+          "action_list": [
+            {
+              "type": "system",
+              "name": "action_create",
+              "description": "System action for creating an application",
+              "runbook": {
+                "name": "3f7fac38_runbook",
+                "description": "",
+                "task_definition_list": [
+                  {
+                    "type": "DAG",
+                    "name": "3ad28b22_dag",
+                    "description": "",
+                    "attrs": {
+                      "type": "",
+                      "edges": []
+                    },
+                    "child_tasks_local_reference_list": [],
+                    "variable_list": [],
+                    "target_any_local_reference": {
+                      "name": "APP",
+                      "kind": "app_service"
+                    },
+                    "timeout_secs": "0",
+                    "retries": "0",
+                    "inherit_target": false,
+                    "status_map_list": []
+                  }
+                ],
+                "main_task_local_reference": {
+                  "name": "3ad28b22_dag",
+                  "kind": "app_task"
+                },
+                "variable_list": []
+              },
+              "critical": false
+            },
+            {
+              "type": "system",
+              "name": "action_delete",
+              "description": "System action for deleting an application. Deletes created VMs as well",
+              "runbook": {
+                "name": "1e19deee_runbook",
+                "description": "",
+                "task_definition_list": [
+                  {
+                    "type": "DAG",
+                    "name": "221b80ab_dag",
+                    "description": "",
+                    "attrs": {
+                      "type": "",
+                      "edges": []
+                    },
+                    "child_tasks_local_reference_list": [],
+                    "variable_list": [],
+                    "target_any_local_reference": {
+                      "name": "APP",
+                      "kind": "app_service"
+                    },
+                    "timeout_secs": "0",
+                    "retries": "0",
+                    "inherit_target": false,
+                    "status_map_list": []
+                  }
+                ],
+                "main_task_local_reference": {
+                  "name": "221b80ab_dag",
+                  "kind": "app_task"
+                },
+                "variable_list": []
+              },
+              "critical": false
+            },
+            {
+              "type": "system",
+              "name": "action_start",
+              "description": "System action for starting an application",
+              "runbook": {
+                "name": "5beaf8e4_runbook",
+                "description": "",
+                "task_definition_list": [
+                  {
+                    "type": "DAG",
+                    "name": "430b1457_dag",
+                    "description": "",
+                    "attrs": {
+                      "type": "",
+                      "edges": []
+                    },
+                    "child_tasks_local_reference_list": [],
+                    "variable_list": [],
+                    "target_any_local_reference": {
+                      "name": "APP",
+                      "kind": "app_service"
+                    },
+                    "timeout_secs": "0",
+                    "retries": "0",
+                    "inherit_target": false,
+                    "status_map_list": []
+                  }
+                ],
+                "main_task_local_reference": {
+                  "name": "430b1457_dag",
+                  "kind": "app_task"
+                },
+                "variable_list": []
+              },
+              "critical": false
+            },
+            {
+              "type": "system",
+              "name": "action_stop",
+              "description": "System action for stopping an application",
+              "runbook": {
+                "name": "be8ad8e1_runbook",
+                "description": "",
+                "task_definition_list": [
+                  {
+                    "type": "DAG",
+                    "name": "1a5aa3ab_dag",
+                    "description": "",
+                    "attrs": {
+                      "type": "",
+                      "edges": []
+                    },
+                    "child_tasks_local_reference_list": [],
+                    "variable_list": [],
+                    "target_any_local_reference": {
+                      "name": "APP",
+                      "kind": "app_service"
+                    },
+                    "timeout_secs": "0",
+                    "retries": "0",
+                    "inherit_target": false,
+                    "status_map_list": []
+                  }
+                ],
+                "main_task_local_reference": {
+                  "name": "1a5aa3ab_dag",
+                  "kind": "app_task"
+                },
+                "variable_list": []
+              },
+              "critical": false
+            },
+            {
+              "type": "system",
+              "name": "action_restart",
+              "description": "System action for restarting an application",
+              "runbook": {
+                "name": "4960d443_runbook",
+                "description": "",
+                "task_definition_list": [
+                  {
+                    "type": "DAG",
+                    "name": "4412ae8f_dag",
+                    "description": "",
+                    "attrs": {
+                      "type": "",
+                      "edges": []
+                    },
+                    "child_tasks_local_reference_list": [],
+                    "variable_list": [],
+                    "target_any_local_reference": {
+                      "name": "APP",
+                      "kind": "app_service"
+                    },
+                    "timeout_secs": "0",
+                    "retries": "0",
+                    "inherit_target": false,
+                    "status_map_list": []
+                  }
+                ],
+                "main_task_local_reference": {
+                  "name": "4412ae8f_dag",
+                  "kind": "app_task"
+                },
+                "variable_list": []
+              },
+              "critical": false
+            }
+          ],
+          "depends_on_list": [],
+          "port_list": [],
+          "singleton": false,
+          "tier": ""
+        },
+        {
+          "name": "DB",
+          "description": "",
+          "variable_list": [],
+          "action_list": [
+            {
+              "type": "system",
+              "name": "action_create",
+              "description": "System action for creating an application",
+              "runbook": {
+                "name": "3f7fac38_runbook_cloned_0",
+                "description": "",
+                "task_definition_list": [
+                  {
+                    "type": "DAG",
+                    "name": "3ad28b22_dag_cloned_1",
+                    "description": "",
+                    "attrs": {
+                      "type": "",
+                      "edges": []
+                    },
+                    "child_tasks_local_reference_list": [],
+                    "variable_list": [],
+                    "target_any_local_reference": {
+                      "name": "DB",
+                      "kind": "app_service"
+                    },
+                    "timeout_secs": "0",
+                    "retries": "0",
+                    "inherit_target": false,
+                    "status_map_list": []
+                  }
+                ],
+                "main_task_local_reference": {
+                  "name": "3ad28b22_dag_cloned_1",
+                  "kind": "app_task"
+                },
+                "variable_list": []
+              },
+              "critical": false
+            },
+            {
+              "type": "system",
+              "name": "action_delete",
+              "description": "System action for deleting an application. Deletes created VMs as well",
+              "runbook": {
+                "name": "1e19deee_runbook_cloned_0",
+                "description": "",
+                "task_definition_list": [
+                  {
+                    "type": "DAG",
+                    "name": "221b80ab_dag_cloned_1",
+                    "description": "",
+                    "attrs": {
+                      "type": "",
+                      "edges": []
+                    },
+                    "child_tasks_local_reference_list": [],
+                    "variable_list": [],
+                    "target_any_local_reference": {
+                      "name": "DB",
+                      "kind": "app_service"
+                    },
+                    "timeout_secs": "0",
+                    "retries": "0",
+                    "inherit_target": false,
+                    "status_map_list": []
+                  }
+                ],
+                "main_task_local_reference": {
+                  "name": "221b80ab_dag_cloned_1",
+                  "kind": "app_task"
+                },
+                "variable_list": []
+              },
+              "critical": false
+            },
+            {
+              "type": "system",
+              "name": "action_start",
+              "description": "System action for starting an application",
+              "runbook": {
+                "name": "5beaf8e4_runbook_cloned_0",
+                "description": "",
+                "task_definition_list": [
+                  {
+                    "type": "DAG",
+                    "name": "430b1457_dag_cloned_1",
+                    "description": "",
+                    "attrs": {
+                      "type": "",
+                      "edges": []
+                    },
+                    "child_tasks_local_reference_list": [],
+                    "variable_list": [],
+                    "target_any_local_reference": {
+                      "name": "DB",
+                      "kind": "app_service"
+                    },
+                    "timeout_secs": "0",
+                    "retries": "0",
+                    "inherit_target": false,
+                    "status_map_list": []
+                  }
+                ],
+                "main_task_local_reference": {
+                  "name": "430b1457_dag_cloned_1",
+                  "kind": "app_task"
+                },
+                "variable_list": []
+              },
+              "critical": false
+            },
+            {
+              "type": "system",
+              "name": "action_stop",
+              "description": "System action for stopping an application",
+              "runbook": {
+                "name": "be8ad8e1_runbook_cloned_0",
+                "description": "",
+                "task_definition_list": [
+                  {
+                    "type": "DAG",
+                    "name": "1a5aa3ab_dag_cloned_1",
+                    "description": "",
+                    "attrs": {
+                      "type": "",
+                      "edges": []
+                    },
+                    "child_tasks_local_reference_list": [],
+                    "variable_list": [],
+                    "target_any_local_reference": {
+                      "name": "DB",
+                      "kind": "app_service"
+                    },
+                    "timeout_secs": "0",
+                    "retries": "0",
+                    "inherit_target": false,
+                    "status_map_list": []
+                  }
+                ],
+                "main_task_local_reference": {
+                  "name": "1a5aa3ab_dag_cloned_1",
+                  "kind": "app_task"
+                },
+                "variable_list": []
+              },
+              "critical": false
+            },
+            {
+              "type": "system",
+              "name": "action_restart",
+              "description": "System action for restarting an application",
+              "runbook": {
+                "name": "4960d443_runbook_cloned_0",
+                "description": "",
+                "task_definition_list": [
+                  {
+                    "type": "DAG",
+                    "name": "4412ae8f_dag_cloned_1",
+                    "description": "",
+                    "attrs": {
+                      "type": "",
+                      "edges": []
+                    },
+                    "child_tasks_local_reference_list": [],
+                    "variable_list": [],
+                    "target_any_local_reference": {
+                      "name": "DB",
+                      "kind": "app_service"
+                    },
+                    "timeout_secs": "0",
+                    "retries": "0",
+                    "inherit_target": false,
+                    "status_map_list": []
+                  }
+                ],
+                "main_task_local_reference": {
+                  "name": "4412ae8f_dag_cloned_1",
+                  "kind": "app_task"
+                },
+                "variable_list": []
+              },
+              "critical": false
+            }
+          ],
+          "depends_on_list": [],
+          "port_list": [],
+          "singleton": false,
+          "tier": ""
+        }
+      ],
+      "published_service_definition_list": [],
+      "substrate_definition_list": [
+        {
+          "type": "AHV_VM",
+          "name": "APP_VM",
+          "description": "",
+          "variable_list": [],
+          "action_list": [],
+          "create_spec": {
+            "type": "",
+            "name": "vm-@@{calm_array_index}@@-@@{calm_time}@@",
+            "availability_zone_reference": null,
+            "backup_policy": null,
+            "cluster_reference": {
+              "type": "",
+              "kind": "cluster",
+              "name": "auto_cluster_prod_f31372a44bb1",
+              "uuid": "00060e89-4ac0-b608-0000-000000029008"
+            },
+            "resources": {
+              "type": "",
+              "nic_list": [
+                {
+                  "type": "",
+                  "nic_type": "NORMAL_NIC",
+                  "subnet_reference": {
+                    "type": "",
+                    "kind": "subnet",
+                    "name": "",
+                    "uuid": "d01fe65c-9ad5-4f16-b2e2-a2df6c3fc441"
+                  },
+                  "network_function_nic_type": "INGRESS",
+                  "mac_address": "",
+                  "ip_endpoint_list": [],
+                  "network_function_chain_reference": null,
+                  "vpc_reference": null
+                }
+              ],
+              "power_state": "ON",
+              "guest_tools": null,
+              "num_vcpus_per_socket": 1,
+              "num_sockets": 1,
+              "memory_size_mib": 4096,
+              "gpu_list": [],
+              "parent_reference": null,
+              "hardware_clock_timezone": "",
+              "account_uuid": "ff5695db-d1c3-4e2b-9853-9d1098b608f8",
+              "guest_customization": null,
+              "boot_config": {
+                "type": "",
+                "boot_device": {
+                  "type": "",
+                  "disk_address": {
+                    "type": "",
+                    "device_index": 0,
+                    "adapter_type": "SCSI"
+                  }
+                },
+                "mac_address": "",
+                "boot_type": "LEGACY"
+              },
+              "disk_list": [
+                {
+                  "type": "",
+                  "data_source_reference": {
+                    "type": "",
+                    "kind": "image",
+                    "name": "Centos7HadoopMaster.qcow2",
+                    "uuid": "1b07a5dc-dc13-44e9-a21e-4d7befd0383f"
+                  },
+                  "volume_group_reference": null,
+                  "device_properties": {
+                    "type": "",
+                    "disk_address": {
+                      "type": "",
+                      "device_index": 0,
+                      "adapter_type": "SCSI"
+                    },
+                    "device_type": "DISK"
+                  },
+                  "disk_size_mib": 20480
+                }
+              ],
+              "serial_port_list": []
+            },
+            "categories": {}
+          },
+          "os_type": "Linux",
+          "readiness_probe": {
+            "login_credential_local_reference": {
+              "name": "work",
+              "kind": "app_credential"
+            },
+            "connection_type": "SSH",
+            "connection_port": 22,
+            "delay_secs": "2",
+            "retries": "5",
+            "address": "@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
+            "disable_readiness_probe": true,
+            "connection_protocol": ""
+          }
+        },
+        {
+          "type": "AHV_VM",
+          "name": "DB_VM",
+          "description": "",
+          "variable_list": [],
+          "action_list": [],
+          "create_spec": {
+            "type": "",
+            "name": "vm-@@{calm_array_index}@@-@@{calm_time}@@",
+            "availability_zone_reference": null,
+            "backup_policy": null,
+            "cluster_reference": {
+              "type": "",
+              "kind": "cluster",
+              "name": "auto_cluster_prod_f31372a44bb1",
+              "uuid": "00060e89-4ac0-b608-0000-000000029008"
+            },
+            "resources": {
+              "type": "",
+              "nic_list": [
+                {
+                  "type": "",
+                  "nic_type": "NORMAL_NIC",
+                  "subnet_reference": {
+                    "type": "",
+                    "kind": "subnet",
+                    "name": "",
+                    "uuid": "d01fe65c-9ad5-4f16-b2e2-a2df6c3fc441"
+                  },
+                  "network_function_nic_type": "INGRESS",
+                  "mac_address": "",
+                  "ip_endpoint_list": [],
+                  "network_function_chain_reference": null,
+                  "vpc_reference": null
+                }
+              ],
+              "power_state": "ON",
+              "guest_tools": null,
+              "num_vcpus_per_socket": 1,
+              "num_sockets": 1,
+              "memory_size_mib": 4096,
+              "gpu_list": [],
+              "parent_reference": null,
+              "hardware_clock_timezone": "",
+              "account_uuid": "ff5695db-d1c3-4e2b-9853-9d1098b608f8",
+              "guest_customization": null,
+              "boot_config": {
+                "type": "",
+                "boot_device": {
+                  "type": "",
+                  "disk_address": {
+                    "type": "",
+                    "device_index": 0,
+                    "adapter_type": "SCSI"
+                  }
+                },
+                "mac_address": "",
+                "boot_type": "LEGACY"
+              },
+              "disk_list": [
+                {
+                  "type": "",
+                  "data_source_reference": {
+                    "type": "",
+                    "kind": "image",
+                    "name": "Centos7HadoopMaster.qcow2",
+                    "uuid": "1b07a5dc-dc13-44e9-a21e-4d7befd0383f"
+                  },
+                  "volume_group_reference": null,
+                  "device_properties": {
+                    "type": "",
+                    "disk_address": {
+                      "type": "",
+                      "device_index": 0,
+                      "adapter_type": "SCSI"
+                    },
+                    "device_type": "DISK"
+                  },
+                  "disk_size_mib": 20480
+                }
+              ],
+              "serial_port_list": []
+            },
+            "categories": {}
+          },
+          "os_type": "Linux",
+          "readiness_probe": {
+            "login_credential_local_reference": {
+              "name": "work",
+              "kind": "app_credential"
+            },
+            "connection_type": "SSH",
+            "connection_port": 22,
+            "delay_secs": "2",
+            "retries": "5",
+            "address": "@@{platform.status.resources.nic_list[0].ip_endpoint_list[0].ip}@@",
+            "disable_readiness_probe": true,
+            "connection_protocol": ""
+          }
+        }
+      ],
+      "package_definition_list": [
+        {
+          "type": "DEB",
+          "name": "Package1",
+          "description": "",
+          "variable_list": [],
+          "action_list": [],
+          "service_local_reference_list": [
+            {
+              "name": "APP",
+              "kind": "app_service"
+            }
+          ],
+          "version": "",
+          "options": {
+            "type": "",
+            "install_runbook": {
+              "name": "ca17c6ea_runbook",
+              "description": "",
+              "task_definition_list": [
+                {
+                  "type": "DAG",
+                  "name": "6affa4ac_dag",
+                  "description": "",
+                  "attrs": {
+                    "type": "",
+                    "edges": []
+                  },
+                  "child_tasks_local_reference_list": [
+                    {
+                      "name": "app install",
+                      "kind": "app_task"
+                    }
+                  ],
+                  "variable_list": [],
+                  "target_any_local_reference": {
+                    "name": "Package1",
+                    "kind": "app_package"
+                  },
+                  "timeout_secs": "0",
+                  "retries": "0",
+                  "inherit_target": false,
+                  "status_map_list": []
+                },
+                {
+                  "type": "EXEC",
+                  "name": "app install",
+                  "description": "",
+                  "attrs": {
+                    "type": "",
+                    "script": "#!/bin/bash\n\nset -e\n\nGO_VERSION=\"1.24.1\"\nAPP_DIR=\"/opt/polling-app/backend\"  \nMAIN_FILE=\"main.go\"                 \nAPP_IP=$(hostname -I | awk '{print $1}') \n\necho \"### Updating system packages\"\nsudo yum update -y\n\necho \"### Installing dependencies for APP\"\nif ! command -v wget &> /dev/null; then\n    sudo yum install -y wget\nelse\n    echo \"wget is already installed\"\nfi\n\nif ! command -v git &> /dev/null; then\n    sudo yum install -y git\nelse\n    echo \"git is already installed\"\nfi\n\nif ! command -v tar &> /dev/null; then\n    sudo yum install -y tar\nelse\n    echo \"tar is already installed\"\nfi\n\nif ! rpm -q bash-completion &> /dev/null; then\n    sudo yum install -y bash-completion\nelse\n    echo \"bash-completion is already installed\"\nfi\n\necho \"### Checking and installing lsof if not already installed\"\nif ! command -v lsof &> /dev/null; then\n    sudo yum install -y lsof\nelse\n    echo \"lsof is already installed\"\nfi\n\necho \"### Removing any existing Go installation\"\nsudo rm -rf /usr/local/go\n\necho \"### Downloading Go $GO_VERSION\"\nwget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz -P /tmp\n\necho \"### Installing Go\"\nsudo tar -C /usr/local -xzf /tmp/go${GO_VERSION}.linux-amd64.tar.gz\n\necho \"### Setting up Go environment variables\"\necho 'export PATH=$PATH:/usr/local/go/bin' | sudo tee /etc/profile.d/go.sh\nsource /etc/profile.d/go.sh\nexport PATH=$PATH:/usr/local/go/bin\n\necho \"### Verifying Go installation\"\ngo version\n\nif [ -d \"PollApp\" ]; then\n    echo \"### Removing existing PollApp directory\"\n    rm -rf PollApp\nfi\n\necho \"### Cloning PollApp repository\"\ngit clone https://github.com/bhandari-ayush/PollApp.git\ncd PollApp/backend/PollApp\n\necho \"### Initializing Go modules and downloading dependencies\"\ngo mod tidy\n\nexport DB_HOST=@@{DB.address}@@\nexport DB_USER=root\nexport BACKEND_PORT=5000\nexport FRONTEND_PORT=3000\nexport ENV=prod\n\necho \"### Running the backend server\"\nnohup go run $MAIN_FILE > backend.log 2>&1 &\n\nsleep 60\n\necho \"### Checking if the backend server is up\"\nBACKEND_HEALTH_URL=\"http://localhost:$BACKEND_PORT/v1/health\"\nfor i in {1..10}; do\n    RESPONSE=$(curl -s --head --request GET $BACKEND_HEALTH_URL)\n    echo \"Response from backend (attempt $i):\"\n    echo \"$RESPONSE\"\n    if echo \"$RESPONSE\" | grep \"200 OK\" > /dev/null; then\n        echo \"Backend server is up and running at $BACKEND_HEALTH_URL\"\n        break\n    else\n        echo \"Waiting for backend server to be up... ($i/10)\"\n        sleep 2\n    fi\ndone\n\nif ! curl -s --head --request GET $BACKEND_HEALTH_URL | grep \"200 OK\" > /dev/null; then\n    echo \"Backend server failed to start. Please check the logs.\"\n    exit 1\nfi\n\necho \"Installing Node.js and npm...\"\ncurl -sL https://rpm.nodesource.com/setup_16.x | sudo bash -\n    sudo yum install -y nodejs\n\necho \"Verifying Node.js and npm installation...\"\nnode -v\nnpm -v\n\ncd ../../frontend\n\necho \"REACT_APP_BACKEND_URL=http://$APP_IP:$BACKEND_PORT\" > .env\n\necho \"Installing dependencies...\"\nnpm install\n\necho \"Starting the React development server...\"\nsetsid env BROWSER=none HOST=0.0.0.0 PORT=$FRONTEND_PORT npx react-scripts start > frontend.log 2>&1 < /dev/null &\n\nsleep 20\n\necho \"### Setup complete\"\necho \"Backend is running on http://$APP_IP:$BACKEND_PORT\"\necho \"Frontend is running on http://$APP_IP:$FRONTEND_PORT\"",
+                    "script_type": "sh",
+                    "command_line_args": "",
+                    "exit_status": [],
+                    "login_credential_local_reference": {
+                      "name": "work",
+                      "kind": "app_credential"
+                    }
+                  },
+                  "child_tasks_local_reference_list": [],
+                  "variable_list": [],
+                  "target_any_local_reference": {
+                    "name": "APP",
+                    "kind": "app_service"
+                  },
+                  "timeout_secs": "0",
+                  "retries": "0",
+                  "inherit_target": false,
+                  "status_map_list": []
+                }
+              ],
+              "main_task_local_reference": {
+                "name": "6affa4ac_dag",
+                "kind": "app_task"
+              },
+              "variable_list": []
+            },
+            "uninstall_runbook": {
+              "name": "cfa0b732_runbook",
+              "description": "",
+              "task_definition_list": [
+                {
+                  "type": "DAG",
+                  "name": "3218d646_dag",
+                  "description": "",
+                  "attrs": {
+                    "type": "",
+                    "edges": []
+                  },
+                  "child_tasks_local_reference_list": [
+                    {
+                      "name": "app uninstall",
+                      "kind": "app_task"
+                    }
+                  ],
+                  "variable_list": [],
+                  "target_any_local_reference": {
+                    "name": "Package1",
+                    "kind": "app_package"
+                  },
+                  "timeout_secs": "0",
+                  "retries": "0",
+                  "inherit_target": false,
+                  "status_map_list": []
+                },
+                {
+                  "type": "EXEC",
+                  "name": "app uninstall",
+                  "description": "",
+                  "attrs": {
+                    "type": "",
+                    "script": "#!/bin/bash\n\nset -e\n\nexport BACKEND_PORT=${BACKEND_PORT:-5000}\nexport FRONTEND_PORT=${FRONTEND_PORT:-3000}\n\necho \"### Checking and killing processes running on BACKEND_PORT=$BACKEND_PORT and FRONTEND_PORT=$FRONTEND_PORT\"\n\nBACKEND_PID=$(sudo lsof -t -i :$BACKEND_PORT || true)\nif [ -n \"$BACKEND_PID\" ]; then\n    echo \"Process ID for BACKEND_PORT=$BACKEND_PORT: $BACKEND_PID\"\n    echo \"Killing process $BACKEND_PID running on BACKEND_PORT=$BACKEND_PORT\"\n    sudo kill -9 $BACKEND_PID || echo \"Failed to kill process on BACKEND_PORT=$BACKEND_PORT\"\nelse\n    echo \"No process found running on BACKEND_PORT=$BACKEND_PORT\"\nfi\n\nFRONTEND_PID=$(sudo lsof -t -i :$FRONTEND_PORT || true)\nif [ -n \"$FRONTEND_PID\" ]; then\n    echo \"Process ID for FRONTEND_PORT=$FRONTEND_PORT: $FRONTEND_PID\"\n    echo \"Killing process $FRONTEND_PID running on FRONTEND_PORT=$FRONTEND_PORT\"\n    sudo kill -9 $FRONTEND_PID || echo \"Failed to kill process on FRONTEND_PORT=$FRONTEND_PORT\"\nelse\n    echo \"No process found running on FRONTEND_PORT=$FRONTEND_PORT\"\nfi\n\necho \"### Stopping backend and frontend processes\"\npkill -f \"go run main.go\" || echo \"No backend process found\"\npkill -f \"react-scripts start\" || echo \"No frontend process found\"\npkill -f \"npx react-scripts start\" || echo \"No setsid frontend process found\"\n\necho \"### Removing Go installation\"\nsudo rm -rf /usr/local/go\nsudo rm -f /etc/profile.d/go.sh\n\necho \"### Removing Node.js and npm\"\nsudo yum remove -y nodejs\n\necho \"### Removing application files\"\nrm -rf /opt/polling-app\nrm -rf ~/PollApp\n\necho \"### Cleaning up temporary files\"\nrm -rf /tmp/go*.linux-amd64.tar.gz\n\necho \"### Uninstall complete\"\n",
+                    "script_type": "sh",
+                    "command_line_args": "",
+                    "exit_status": [],
+                    "login_credential_local_reference": {
+                      "name": "work",
+                      "kind": "app_credential"
+                    }
+                  },
+                  "child_tasks_local_reference_list": [],
+                  "variable_list": [],
+                  "target_any_local_reference": {
+                    "name": "APP",
+                    "kind": "app_service"
+                  },
+                  "timeout_secs": "0",
+                  "retries": "0",
+                  "inherit_target": false,
+                  "status_map_list": []
+                }
+              ],
+              "main_task_local_reference": {
+                "name": "3218d646_dag",
+                "kind": "app_task"
+              },
+              "variable_list": []
+            },
+            "upgrade_runbook": {}
+          }
+        },
+        {
+          "type": "DEB",
+          "name": "Package1_cloned_0",
+          "description": "",
+          "variable_list": [],
+          "action_list": [],
+          "service_local_reference_list": [
+            {
+              "name": "DB",
+              "kind": "app_service"
+            }
+          ],
+          "version": "",
+          "options": {
+            "type": "",
+            "install_runbook": {
+              "name": "ca17c6ea_runbook_cloned_0",
+              "description": "",
+              "task_definition_list": [
+                {
+                  "type": "DAG",
+                  "name": "6affa4ac_dag_cloned_1",
+                  "description": "",
+                  "attrs": {
+                    "type": "",
+                    "edges": []
+                  },
+                  "child_tasks_local_reference_list": [
+                    {
+                      "name": "db install",
+                      "kind": "app_task"
+                    }
+                  ],
+                  "variable_list": [],
+                  "target_any_local_reference": {
+                    "name": "Package1_cloned_0",
+                    "kind": "app_package"
+                  },
+                  "timeout_secs": "0",
+                  "retries": "0",
+                  "inherit_target": false,
+                  "status_map_list": []
+                },
+                {
+                  "type": "EXEC",
+                  "name": "db install",
+                  "description": "",
+                  "attrs": {
+                    "type": "",
+                    "script": "set -e\n\nPG_USER=\"root\"\nPG_PASSWORD=\"postgres\"\nPG_DATABASE=\"pollapp\"\n\nsudo yum update -y\n\necho \"### Checking and installing epel-release if not already installed\"\nif ! rpm -q epel-release &> /dev/null; then\n    sudo yum install -y epel-release\nelse\n    echo \"epel-release is already installed\"\nfi\n\necho \"### Checking and installing wget if not already installed\"\nif ! command -v wget &> /dev/null; then\n    sudo yum install -y wget\nelse\n    echo \"wget is already installed\"\nfi\n\necho \"### Checking and installing firewalld if not already installed\"\nif ! systemctl is-active --quiet firewalld; then\n    sudo yum install -y firewalld\n    sudo systemctl enable --now firewalld\nelse\n    echo \"firewalld is already installed and running\"\nfi\n\necho \"### starting db server installation\"\n\necho \"### Checking and installing pgdg-redhat-repo if not already installed\"\nif ! rpm -q pgdg-redhat-repo &> /dev/null; then\n    sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm\nelse\n    echo \"pgdg-redhat-repo is already installed\"\nfi\n\necho \"### Checking and installing PostgreSQL server and contrib if not already installed\"\nif ! rpm -q postgresql-server &> /dev/null; then\n    sudo yum install -y postgresql-server\nelse\n    echo \"postgresql-server is already installed\"\nfi\n\nif ! rpm -q postgresql-contrib &> /dev/null; then\n    sudo yum install -y postgresql-contrib\nelse\n    echo \"postgresql-contrib is already installed\"\nfi\n\nsudo postgresql-setup initdb\nsudo systemctl enable postgresql\nsudo systemctl start postgresql\n\nsudo -u postgres psql -tc \"SELECT 1 FROM pg_roles WHERE rolname = '$PG_USER'\" | grep -q 1 || \\\nsudo -u postgres psql -c \"CREATE USER $PG_USER WITH PASSWORD '$PG_PASSWORD';\"\nsudo -u postgres psql -tc \"SELECT 1 FROM pg_database WHERE datname = '$PG_DATABASE'\" | grep -q 1 || \\\nsudo -u postgres psql -c \"CREATE DATABASE $PG_DATABASE OWNER $PG_USER;\"\nsudo -u postgres psql -c \"GRANT ALL PRIVILEGES ON DATABASE $PG_DATABASE TO $PG_USER;\"\nsudo -u postgres psql -d $PG_DATABASE -c \"ALTER ROLE $PG_USER SET search_path TO public;\"\n\nTABLE_SQL=\"SET ROLE $PG_USER;\"\n\necho \"$TABLE_SQL\" | sudo -u postgres psql -d \"$PG_DATABASE\" -v ON_ERROR_STOP=1\n\nPG_CONF=\"/var/lib/pgsql/data/postgresql.conf\"\nsudo sed -i \"s/^#listen_addresses = .*/listen_addresses = '*'/g\" \"$PG_CONF\"\n\nPG_HBA=\"/var/lib/pgsql/data/pg_hba.conf\"\necho \"host    all             all             0.0.0.0/0               md5\" | sudo tee -a \"$PG_HBA\"\nsudo sed -i 's/^\\(local[[:space:]]\\+all[[:space:]]\\+all[[:space:]]\\+\\)peer/\\1md5/' /var/lib/pgsql/data/pg_hba.conf\nsudo systemctl restart postgresql\n\necho \"### db server installation completed\"\n\nsudo firewall-cmd --permanent --add-port=5432/tcp\nsudo firewall-cmd --reload\necho \"### PostgreSQL installation and configuration complete\"\necho \"### PostgreSQL is running and listening on port 5432\"",
+                    "script_type": "sh",
+                    "command_line_args": "",
+                    "exit_status": [],
+                    "login_credential_local_reference": {
+                      "name": "work",
+                      "kind": "app_credential"
+                    }
+                  },
+                  "child_tasks_local_reference_list": [],
+                  "variable_list": [],
+                  "target_any_local_reference": {
+                    "name": "DB",
+                    "kind": "app_service"
+                  },
+                  "timeout_secs": "0",
+                  "retries": "0",
+                  "inherit_target": false,
+                  "status_map_list": []
+                }
+              ],
+              "main_task_local_reference": {
+                "name": "6affa4ac_dag_cloned_1",
+                "kind": "app_task"
+              },
+              "variable_list": []
+            },
+            "uninstall_runbook": {
+              "name": "cfa0b732_runbook_cloned_0",
+              "description": "",
+              "task_definition_list": [
+                {
+                  "type": "DAG",
+                  "name": "3218d646_dag_cloned_1",
+                  "description": "",
+                  "attrs": {
+                    "type": "",
+                    "edges": []
+                  },
+                  "child_tasks_local_reference_list": [
+                    {
+                      "name": "db uninstall",
+                      "kind": "app_task"
+                    }
+                  ],
+                  "variable_list": [],
+                  "target_any_local_reference": {
+                    "name": "Package1_cloned_0",
+                    "kind": "app_package"
+                  },
+                  "timeout_secs": "0",
+                  "retries": "0",
+                  "inherit_target": false,
+                  "status_map_list": []
+                },
+                {
+                  "type": "EXEC",
+                  "name": "db uninstall",
+                  "description": "",
+                  "attrs": {
+                    "type": "",
+                    "script": "set -e\n\necho \"### Starting PostgreSQL uninstallation process\"\n\necho \"### Removing PostgreSQL packages\"\nsudo yum remove -y postgresql-server postgresql-contrib || echo \"Failed to remove PostgreSQL packages\"\n\necho \"### Cleaning up PostgreSQL data and log directories\"\nsudo rm -rf /var/lib/pgsql /var/log/postgresql || echo \"Failed to remove PostgreSQL directories\"\n\necho \"### PostgreSQL uninstallation complete\"",
+                    "script_type": "sh",
+                    "command_line_args": "",
+                    "exit_status": [],
+                    "login_credential_local_reference": {
+                      "name": "work",
+                      "kind": "app_credential"
+                    }
+                  },
+                  "child_tasks_local_reference_list": [],
+                  "variable_list": [],
+                  "target_any_local_reference": {
+                    "name": "DB",
+                    "kind": "app_service"
+                  },
+                  "timeout_secs": "0",
+                  "retries": "0",
+                  "inherit_target": false,
+                  "status_map_list": []
+                }
+              ],
+              "main_task_local_reference": {
+                "name": "3218d646_dag_cloned_1",
+                "kind": "app_task"
+              },
+              "variable_list": []
+            },
+            "upgrade_runbook": {}
+          }
+        }
+      ],
+      "app_profile_list": [
+        {
+          "name": "Default",
+          "description": "",
+          "variable_list": [],
+          "action_list": [],
+          "deployment_create_list": [
+            {
+              "type": "GREENFIELD",
+              "name": "deployment_9578a5df",
+              "description": "",
+              "variable_list": [],
+              "action_list": [],
+              "depends_on_list": [],
+              "min_replicas": "1",
+              "max_replicas": "1",
+              "default_replicas": "1",
+              "package_local_reference_list": [
+                {
+                  "name": "Package1",
+                  "kind": "app_package"
+                }
+              ],
+              "substrate_local_reference": {
+                "name": "APP_VM",
+                "kind": "app_substrate"
+              },
+              "published_service_local_reference_list": []
+            },
+            {
+              "type": "GREENFIELD",
+              "name": "deployment_6dfd79d9",
+              "description": "",
+              "variable_list": [],
+              "action_list": [],
+              "depends_on_list": [],
+              "min_replicas": "1",
+              "max_replicas": "1",
+              "default_replicas": "1",
+              "package_local_reference_list": [
+                {
+                  "name": "Package1_cloned_0",
+                  "kind": "app_package"
+                }
+              ],
+              "substrate_local_reference": {
+                "name": "DB_VM",
+                "kind": "app_substrate"
+              },
+              "published_service_local_reference_list": []
+            }
+          ],
+          "snapshot_config_list": [],
+          "restore_config_list": [],
+          "environment_reference_list": [],
+          "application_url": "",
+          "patch_list": []
+        }
+      ],
+      "credential_definition_list": [
+        {
+          "type": "PASSWORD",
+          "name": "work",
+          "description": "",
+          "username": "root",
+          "secret": {
+            "attrs": {
+              "secret_reference": {},
+              "is_secret_modified": true
+            },
+            "value": "RUFpdoNy3yrqYcNPkPVZkdDRXebbWIja2hUqTNBccaglVHhi/wWNqJ38:utf-8"
+          },
+          "cred_class": "static"
+        }
+      ],
+      "default_credential_local_reference": {
+        "name": "work",
+        "kind": "app_credential"
+      },
+      "type": "USER",
+      "client_attrs": {
+        "deployment_9578a5df": {
+          "x": 259.5,
+          "y": 216
+        },
+        "deployment_6dfd79d9": {
+          "x": 609.5,
+          "y": 232
+        }
+      }
+    }
+  },
+  "api_version": "3.0",
+  "product_version": "4.0.0",
+  "metadata": {
+    "last_update_time": "1744984472428813",
+    "creation_time": "1744984331978598",
+    "spec_version": 3,
+    "name": "Poll",
+    "kind": "blueprint"
+  },
+  "contains_secrets": true
+}

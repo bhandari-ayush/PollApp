@@ -80,10 +80,15 @@ export ENV=prod
 echo "### Running the backend server"
 nohup go run $MAIN_FILE > backend.log 2>&1 &
 
+sleep 60
+
 echo "### Checking if the backend server is up"
 BACKEND_HEALTH_URL="http://localhost:$BACKEND_PORT/v1/health"
 for i in {1..10}; do
-    if curl -s --head --request GET $BACKEND_HEALTH_URL | grep "200 OK" > /dev/null; then
+    RESPONSE=$(curl -s --head --request GET $BACKEND_HEALTH_URL)
+    echo "Response from backend (attempt $i):"
+    echo "$RESPONSE"
+    if echo "$RESPONSE" | grep "200 OK" > /dev/null; then
         echo "Backend server is up and running at $BACKEND_HEALTH_URL"
         break
     else
